@@ -1,0 +1,28 @@
+# pseudo
+*.upf
+*.UPF
+
+# QE outputs
+out/
+*.out
+
+# W90 inputs
+*.amn
+*.mmn
+*.eig
+*.spn
+
+# W90 outputs
+*.nnkp
+*.wout
+*.cube
+*_band.gnu
+*_band.dat
+*_band.labelinfo.dat
+*_band.kpt
+*.chk
+*.chk.fmt
+
+# misc
+*.log
+

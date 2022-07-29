@@ -1,0 +1,41 @@
+&CONTROL
+  calculation = 'scf'
+  etot_conv_thr =   3.0000000000d-05
+  forc_conv_thr =   1.0000000000d-04
+  max_seconds =   4.1040000000d+04
+  outdir = './out/'
+  prefix = 'mos2'
+  pseudo_dir = './pseudo/'
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'high'
+/
+&SYSTEM
+  degauss =   1.0000000000d-02
+  ecutrho =   2.8000000000d+02
+  ecutwfc =   3.5000000000d+01
+  ibrav = 0
+  nat = 3
+  nosym = .false.
+  ntyp = 2
+  occupations = 'smearing'
+  smearing = 'cold'
+/
+&ELECTRONS
+  conv_thr =   6.0000000000d-10
+  electron_maxstep = 80
+  mixing_beta =   4.0000000000d-01
+/
+ATOMIC_SPECIES
+Mo     95.95 Mo_ONCV_PBE-1.0.oncvpsp.upf
+S      32.06 s_pbe_v1.4.uspp.F.UPF
+ATOMIC_POSITIONS angstrom
+Mo           0.0000000000       0.0000000000       0.0000000000 
+S            0.0000000000       1.8421191469      38.4380058273 
+S            0.0000000000       1.8421191469       1.5620440727 
+K_POINTS automatic
+12 12 1 0 0 0
+CELL_PARAMETERS angstrom
+      3.1906439561       0.0000000000       0.0000000000
+     -1.5953219780       2.7631787204       0.0000000000
+      0.0000000000       0.0000000000      40.0000000000
