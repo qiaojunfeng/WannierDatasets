@@ -1,2 +1,3 @@
-# wjl-examples
-Examples for Wannier.jl
+# wjl-tutorials
+
+Tutorials for `Wannier.jl`
