@@ -5,6 +5,7 @@
 # QE outputs
 out/
 *.out
+UNK*
 
 # W90 inputs
 *.amn
@@ -16,6 +17,7 @@ out/
 *.nnkp
 *.wout
 *.cube
+*.xsf
 *_band.gnu
 *_band.dat
 *_band.labelinfo.dat
@@ -25,4 +27,3 @@ out/
 
 # misc
 *.log
-
