@@ -24,6 +24,7 @@ UNK*
 *_band.kpt
 *.chk
 *.chk.fmt
+*.werr
 
 # misc
 *.log
