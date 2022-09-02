@@ -6,6 +6,9 @@
 out/
 *.out
 UNK*
+bands.dat
+*.proj.dat.projwfc_up
+*.pdos_atm#*
 
 # W90 inputs
 *.amn
@@ -28,3 +31,4 @@ UNK*
 
 # misc
 *.log
+CRASH

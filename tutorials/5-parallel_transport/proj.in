@@ -1,0 +1,7 @@
+&PROJWFC
+  deltae =   2.0000000000d-01
+! lsym = .true.
+  outdir = './out'
+  prefix = 'mos2'
+  filproj = 'mos2.proj.dat'
+/

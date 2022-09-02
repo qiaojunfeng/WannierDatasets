@@ -5,7 +5,7 @@
   max_seconds =   4.1040000000d+04
   outdir = './out/'
   prefix = 'mos2'
-  pseudo_dir = './pseudo/'
+  pseudo_dir = '../../pseudo/'
   restart_mode = 'from_scratch'
   tprnfor = .true.
   tstress = .true.
@@ -32,16 +32,16 @@
   startingpot = 'file'
 /
 ATOMIC_SPECIES
-Mo     95.95 Mo_ONCV_PBE-1.0.oncvpsp.upf
-S      32.06 s_pbe_v1.4.uspp.F.UPF
+Mo     95.95 Mo_ONCV_PBEsol-1.0.upf
+S      32.06 s_pbesol_v1.4.uspp.F.UPF
 ATOMIC_POSITIONS angstrom
 Mo           0.0000000000       0.0000000000       0.0000000000 
-S            0.0000000000       1.8421191469      38.4380058273 
+S            0.0000000000       1.8421191469      -1.5620440727
 S            0.0000000000       1.8421191469       1.5620440727 
 CELL_PARAMETERS angstrom
       3.1906439561       0.0000000000       0.0000000000
      -1.5953219780       2.7631787204       0.0000000000
-      0.0000000000       0.0000000000      40.0000000000
+      0.0000000000       0.0000000000      10.0000000000
 K_POINTS crystal
          554
     0.000000    0.000000    0.000000   1.0
