@@ -4,6 +4,7 @@
 # Changes are:
 # - use `3 x 3 x 1` kgrid
 # - unk files are resampled on a much coarse grid to save space
+# - fix normalization of unk
 using DFTK
 using Unitful
 using UnitfulAtomic
@@ -45,12 +46,11 @@ period = 3
 using Wannier
 # and make sure unk is normalized such that
 # for each w = W[:,:,:,i], i = 1:n_bands
-# sum(conj(w) .* w) = prod(size(w))
+#     sum(conj(w) .* w) = prod(size(w))
 for f in filter(x -> startswith(x, "UNK"), readdir())
     ik, W = read_unk(f)
     w = W[:,:,:,1]
     fac = sqrt(prod(size(w)) / sum(real(conj(w) .* w)))
-    println(fac, " ", sum(real(conj(w) .* w)))
     W = fac * W[1:period:end, 1:period:end, 1:period:end, :]
     write_unk("$period.$f", ik, W)
 end
