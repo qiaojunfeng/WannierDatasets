@@ -7,8 +7,9 @@ out/
 *.out
 UNK*
 bands.dat
-*.proj.dat.projwfc_up
+*.projwfc_up
 *.pdos_atm#*
+*.pdos_tot
 
 # W90 inputs
 *.amn
