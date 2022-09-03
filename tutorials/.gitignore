@@ -32,3 +32,4 @@ bands.dat
 # misc
 *.log
 CRASH
+.ipynb_checkpoints
