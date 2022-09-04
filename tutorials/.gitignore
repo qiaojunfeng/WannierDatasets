@@ -9,6 +9,8 @@ UNK*
 bands.dat
 *.proj.dat.projwfc_up
 *.pdos_atm#*
+*.gnu
+*.rap
 
 # W90 inputs
 *.amn

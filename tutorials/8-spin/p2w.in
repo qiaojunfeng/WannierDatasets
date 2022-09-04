@@ -1,0 +1,10 @@
+&inputpp 
+    outdir = './out'
+    prefix = 'Fe'
+    seedname = 'Fe'
+    write_mmn = .true.
+    write_amn = .true.
+    write_spn = .true.
+    write_unk = .false.
+    spn_formatted = .true.
+/
