@@ -4,6 +4,12 @@
 # exit immediately if a command exits with a non-zero status.
 set -e
 
+# Two options:
+# - read formatted chk and write formatted amn/mmn/eig/unk
+# - read binary chk and write binary amn/mmn/eig/unk
+binary=false
+# binary=true
+
 # change these to your own paths
 w90chk2chk="$HOME/git/wannier90/w90chk2chk.x"
 wannier="$HOME/.julia/bin/wannier"
@@ -20,11 +26,17 @@ fi
 seedname="${@: -1}"
 
 # From binary to textual
-$w90chk2chk -export $seedname
-printf '\n\n'
+if [ $binary != true ]; then
+    $w90chk2chk -export $seedname
+    printf '\n\n'
+fi
 
 # split Wannierization
-$wannier splitvc $@
+if [ $binary = true ]; then
+    $wannier splitvc --binary $@
+else
+    $wannier splitvc $@
+fi
 printf '\n\n'
 
 # function to prepare win file
