@@ -126,6 +126,16 @@ makedocs(;
             "Normalization" => "theory/normalization.md",
         ],
         "API" => [
+            "WannierIO" => [
+                "Home" => "index.md",
+                "API" => [
+                    "Convention" => "api/convention.md",
+                    "Util" => "api/util.md",
+                    "Wannier90" => "api/w90.md",
+                    "Volumetric data" => "api/volumetric.md",
+                    "QE" => "api/qe.md",
+                ],
+            ],
             "Utility" => "api/util.md",
             "Input/Output" => "api/io.md",
             "B vector" => "api/bvector.md",
