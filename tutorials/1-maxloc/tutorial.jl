@@ -28,7 +28,8 @@ using Wannier
 using Printf  # for pretty print
 
 # Path of current tutorial
-CUR_DIR = "1-maxloc"
+PWD = "."
+cd(PWD)
 
 # ### Tips on initial guess
 #=
@@ -40,7 +41,7 @@ bond-centered `s` orbitals as guides for the bonding WFs.
 The bond centers can be calculated by using the [`find_nearests`](@ref) function
 in `Wannier.jl`
 =#
-win = read_win("$CUR_DIR/si2.win")
+win = read_win("si2.win")
 
 #=
 !!! tip
@@ -101,7 +102,7 @@ We will use the [`read_w90`](@ref) function to read the
 `win`, `amn`, `mmn`, and `eig` files, and construct a [`Model`](@ref Model)
 that abstracts the calculation
 =#
-model = read_w90("$CUR_DIR/si2")
+model = read_w90("si2")
 
 #=
 ## Maximal localization
@@ -139,7 +140,7 @@ we will just save the new gauge to an `amn` file,
 which can be used as the new initial guess for `Wannier90`,
 or reuse it in `Wannier.jl`.
 =#
-write_amn("$CUR_DIR/si2.maxloc.amn", U)
+write_amn("si2.maxloc.amn", U)
 
 #=
 Voilà! We have finished the first tutorial! 🎉🎉🎉

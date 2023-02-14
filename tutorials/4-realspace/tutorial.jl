@@ -31,7 +31,8 @@ In this tutorial, we will disentangle the 2D graphene, and compute its realspace
 using Wannier
 
 # Path of current tutorial
-CUR_DIR = "4-realspace"
+PWD = "."
+cd(PWD)
 
 #=
 ## Model generation
@@ -39,7 +40,7 @@ CUR_DIR = "4-realspace"
 We will use the [`read_w90`](@ref) function to read the
 `win`, `amn`, `mmn`, and `eig` files, and construct a [`Model`](@ref) that abstracts the calculation
 =#
-model = read_w90("$CUR_DIR/graphene")
+model = read_w90("graphene")
 
 #=
 ## Disentanglement and maximal localization
@@ -84,7 +85,7 @@ The [`write_realspace_wf`](@ref) function reads the `UNK` files,
 compute the real space WFs in a `n_supercells`-sized super cell,
 and write them to `xsf` files,
 =#
-write_realspace_wf("$CUR_DIR/wjl", model; unkdir=CUR_DIR, n_supercells=3, format=:xsf)
+write_realspace_wf("wjl", model; unkdir=CUR_DIR, n_supercells=3, format=:xsf)
 
 #=
 Now, open the `wjl_00001.xsf`, etc. files with a 3D
@@ -119,7 +120,7 @@ using WannierPlots
     then the WFs will be shown in a standalone window.
 =#
 # Read the 1st WF
-xsf = read_xsf("$CUR_DIR/wjl_00001.xsf");
+xsf = read_xsf("wjl_00001.xsf");
 # Visualize with `WannierPlots.jl`,
 pos = inv(xsf.primvec) * xsf.atom_positions  # to fractional coordinates
 atom_numbers = parse.(Int, xsf.atoms)  # to integer atomic numbers

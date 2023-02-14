@@ -1,4 +1,4 @@
-# # 2. Disentanglement of entangled manifold
+# # 8. Interpolation of Fermi surface
 
 #=
 ```@meta
@@ -7,8 +7,8 @@ CurrentModule = Wannier
 =#
 
 #=
-In the second tutorial, we will run the disentanglement algorithm on
-the silicon valence + conduction bands. As usual, we need to
+In this tutorial, we will run the disentanglement algorithm on
+the copper and then compute the Fermi surface.
 
 1. generate the `amn`, `mmn`, and `eig` files by using `Quantum ESPRESSO` (QE)
 2. construct a [`Model`](@ref) for `Wannier.jl`, by reading the `win`, `amn`, `mmn`, and `eig` files
@@ -18,17 +18,19 @@ the silicon valence + conduction bands. As usual, we need to
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`2-disentangle.ipynb`](./2-disentangle.ipynb)
-    - Julia script: [`2-disentangle.jl`](./2-disentangle.jl)
+    - Jupyter notebook: [`8-fermi_surface.ipynb`](./8-fermi_surface.ipynb)
+    - Julia script: [`8-fermi_surface.jl`](./8-fermi_surface.jl)
 =#
 
 # ## Preparation
 # Load the package
+using WannierIO
 using Wannier
-using Printf  # for pretty print
+using WannierPlots
 
 # Path of current tutorial
-CUR_DIR = "2-disentangle"
+PWD = "."
+cd(PWD)
 
 #=
 !!! tip
@@ -42,7 +44,7 @@ CUR_DIR = "2-disentangle"
 We will use the [`read_w90`](@ref) function to read the
 `win`, `amn`, `mmn`, and `eig` files, and construct a [`Model`](@ref) that abstracts the calculation
 =#
-model = read_w90("$CUR_DIR/si2")
+model = read_w90("cu")
 
 #=
 !!! tip
@@ -67,6 +69,9 @@ omega(model)
 # The final spread is
 omega(model, U)
 
+# save the new gauge to the model
+model.U .= U;
+
 #=
 !!! note
 
@@ -76,20 +81,46 @@ omega(model, U)
     to further minimize a bit the spread.
 =#
 
-#=
-## Save the new gauge
-
-Again, we save the new gauge to an `amn` file,
-which can be used as the new initial guess for `Wannier90`,
-or reuse it in `Wannier.jl`.
-=#
-write_amn("$CUR_DIR/si2.dis.amn", U)
+# load QE band structure
+kpoints_qe, E_qe = WannierIO.read_qe_band("qe_bands.dat");
+# the Fermi energy from scf calculation
+ef = 16.8985
 
 #=
-Great! Now you have finished the disentanglement tutorial.
-
-As you can see, the workflow is very similar to the previous tutorial:
-the Wannierization functions, `max_localize` and `disentangle`,
-accept a `Model` and some convergence thresholds, and return the gauge matrices. This interface are also adopted in
-other Wannierization algorithms, shown in later tutorials.
+## Generate an [`InterpModel`](@ref)
 =#
+# Force using `kpoint_path` in `win` file
+win = read_win("cu.win")
+kpath = Wannier.KPath(win.unit_cell, win.kpoint_path)
+
+interp_model = Wannier.InterpModel(model; kpath=kpath)
+
+# interpolate band structure
+kpi, E = Wannier.interpolate(interp_model)
+
+# plot band difference
+plot_band_diff(kpi, E_qe, E; fermi_energy=ef)
+
+#=
+then interpolate the Fermi surface on a ``30 \times 30 \times 30`` mesh
+=#
+kpoints, E_fs = Wannier.fermi_surface(interp_model; n_k=30);
+
+#=
+save to a `bxsf` file
+=#
+# origin of the grid, always zeros
+origin = zeros(Float64, 3)
+WannierIO.write_bxsf("cu.bxsf", ef, origin, interp_model.recip_lattice, E_fs)
+
+# show the Brillouin zone
+using Brillouin
+using PlotlyJS
+
+# primitive reciprocal basis associated with k-path
+bxsf = Wannier.read_bxsf("cu.bxsf")
+fig = WannierPlots.plot_fermisurf_plotly(bxsf.rgrid, bxsf.fermi_energy, bxsf.E; kpath=kpath)
+fig.layout.width = 1000
+fig.layout.height = 1000
+fig.layout.autosize = false
+fig

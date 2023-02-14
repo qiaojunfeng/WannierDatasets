@@ -1,2 +1,5 @@
-# generated from tutorials_src
-tutorials
+# generated from tutorials src
+tutorials/*.ipynb
+tutorials/*.jl
+!tutorials/foreword.jl
+tutorials/*.md

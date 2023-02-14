@@ -32,7 +32,8 @@ introduing too many package dependencies that are irrelevant to Wannierization.
 =#
 
 # Path of current tutorial
-CUR_DIR = "3-band"
+PWD = "."
+cd(PWD)
 
 #=
 !!! tip
@@ -49,7 +50,7 @@ We will use the [`read_w90_interp`](@ref) function to read the
 `win`, `mmn`, `eig`, and `chk.fmt` files, and construct an
 [`InterpModel`](@ref) that is used for interpolation purpose.
 =#
-model = read_w90_interp("$CUR_DIR/si2")
+model = read_w90_interp("si2")
 
 #=
 !!! tip
@@ -69,7 +70,7 @@ model = read_w90_interp("$CUR_DIR/si2")
 You can also use the [`read_w90`](@ref) function to read the
 `amn` file and generate a [`Model`](@ref),
 =#
-m = read_w90("$CUR_DIR/si2")
+m = read_w90("si2")
 #=
 Then use the [`InterpModel`](@ref) constructor to
 construct an `InterpModel` from an existing `Model`,
@@ -159,7 +160,7 @@ kpi
 You can save the result to the same format
 as `Wannier90` `band.dat`, by
 =#
-write_w90_band("$CUR_DIR/wjl", kpi, E)
+write_w90_band("wjl", kpi, E)
 #=
 where `wjl` is the seedname of the output,
 i.e., written files are
@@ -194,7 +195,7 @@ Main.HTMLPlot(P, 500) # hide
 Now we load the `Wannier90` interpolated band,
 to compare between the two codes,
 =#
-kpi_w90, E_w90 = read_w90_band("$CUR_DIR/si2", model.recip_lattice)
+kpi_w90, E_w90 = read_w90_band("si2", model.recip_lattice)
 #=
 !!! tip
 

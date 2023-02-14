@@ -70,7 +70,8 @@ using Wannier
 using WannierPlots
 
 # Path of current tutorial
-CUR_DIR = "6-split"
+PWD = "."
+cd(PWD)
 
 #=
 ## Model generation
@@ -78,7 +79,7 @@ CUR_DIR = "6-split"
 We will use the [`read_w90`](@ref) function to read the
 `win`, `amn`, `mmn`, and `eig` files, and construct a [`Model`](@ref) that abstracts the calculation
 =#
-model = read_w90("$CUR_DIR/si2")
+model = read_w90("si2")
 
 #=
 ## Disentanglement

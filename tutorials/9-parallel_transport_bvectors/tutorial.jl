@@ -45,7 +45,8 @@ using Wannier
 using WannierPlots
 
 # Path of current tutorial
-CUR_DIR = "9-parallel_transport_bvectors"
+PWD = "."
+cd(PWD)
 
 #=
 ## Model generation
@@ -68,7 +69,7 @@ We will use the [`read_w90`](@ref) function to read the
     can inspect these two files and use them to populate the `kpoint_path` block
     in the `win` file, or the `K_POINTS` block in the `pw.x` bands calculation.
 =#
-model = read_w90("$CUR_DIR/CuBr2")
+model = read_w90("CuBr2")
 
 #=
 !!! note
@@ -97,7 +98,7 @@ WannierPlots.plot(bvectors_nn)
 # now write to a new `nnkp` file
 n_wann = model.n_wann
 exclude_bands = collect(1:16)
-Wannier.write_nnkp("$CUR_DIR/CuBr2_nn.nnkp", bvectors_nn, n_wann, exclude_bands)
+Wannier.write_nnkp("CuBr2_nn.nnkp", bvectors_nn, n_wann, exclude_bands)
 
 #=
 now we can run `pw2wannier90.x` to generate a new `mmn` file.
@@ -120,7 +121,7 @@ A template input file for `pw2wannier90.x` is provided here
 
 Now, we load the new `mmn` file, and construct a new [`Model`](@ref)
 =#
-M_nn = WannierIO.read_mmn("$CUR_DIR/CuBr2_nn.mmn")[1];
+M_nn = WannierIO.read_mmn("CuBr2_nn.mmn")[1];
 model_nn = Wannier.Model(
     model.lattice,
     model.atom_positions,
@@ -158,12 +159,12 @@ Finally, let's have a look at the band interpolation.
 
 First load the QE band structure
 =#
-kpoints_qe, E_qe = WannierIO.read_qe_band("$CUR_DIR/qe_bands.dat");
+kpoints_qe, E_qe = WannierIO.read_qe_band("qe_bands.dat");
 # the Fermi energy from scf calculation
 ef = 4.6459
 
 # Force using `kpoint_path` in `win` file
-win = read_win("$CUR_DIR/CuBr2.win")
+win = read_win("CuBr2.win")
 kpath = Wannier.KPath(win.unit_cell, win.kpoint_path)
 
 interp_model = Wannier.InterpModel(model; kpath=kpath)

@@ -44,7 +44,8 @@ using Wannier
 using WannierPlots
 
 # Path of current tutorial
-CUR_DIR = "5-parallel_transport"
+PWD = "."
+cd(PWD)
 
 #=
 ## Model generation
@@ -52,7 +53,7 @@ CUR_DIR = "5-parallel_transport"
 We will use the [`read_w90`](@ref) function to read the
 `win`, `amn`, `mmn`, and `eig` files, and construct a [`Model`](@ref) that abstracts the calculation
 =#
-model = read_w90("$CUR_DIR/mos2")
+model = read_w90("mos2")
 
 #=
 ## Maximal localization
@@ -213,11 +214,11 @@ Main.HTMLPlot(P, 500)  # hide
 Again, rerun with a finer kgrid and see the improvements of interpolation quality.
 Also, you can try to plot the WFs, by first truncating the `unk`
 =#
-Wannier.truncate_unk(CUR_DIR, [7], "$CUR_DIR/truncate")
+Wannier.truncate_unk(CUR_DIR, [7], "truncate")
 # the new `unk`s are stored in a subfolder `truncate`,
 # now write the realspace WF
 write_realspace_wf(
-    "$CUR_DIR/wjl", model_top; n_supercells=[3, 3, 2], unkdir="$CUR_DIR/truncate"
+    "wjl", model_top; n_supercells=[3, 3, 2], unkdir="truncate"
 )
 # and visualize with your favorite tool.
 
@@ -236,7 +237,7 @@ using WannierPlots
     then the WFs will be shown in a standalone window.
 =#
 # Read the 1st WF
-xsf = read_xsf("$CUR_DIR/wjl_00001.xsf");
+xsf = read_xsf("wjl_00001.xsf");
 # Visualize with `WannierPlots.jl`,
 pos = inv(xsf.primvec) * xsf.atom_positions  # to fractional coordinates
 atom_numbers = parse.(Int, xsf.atoms)  # to integer atomic numbers
