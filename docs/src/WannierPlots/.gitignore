@@ -1,2 +1,3 @@
-# generated from tutorials_src
-tutorials
+# generated from examples
+examples/*.md
+examples/*.ipynb

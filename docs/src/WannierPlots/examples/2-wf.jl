@@ -9,15 +9,10 @@ CurrentModule = WannierPlots
 #=
 In this tutorial, we will plot realspace representation.
 
-1. construct a [`Model`](@ref) for `Wannier.jl`, by reading the `win`, `amn`, `mmn`, and `eig` files
-2. run `Wannier.jl` [`disentangle`](@ref) on the `Model` to minimize the spread
-3. write the real space WFs to `xsf` files
-
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`4-realspace.ipynb`](./4-realspace.ipynb)
-    - Julia script: [`4-realspace.jl`](./4-realspace.jl)
+    - Jupyter notebook: [`2-wf.ipynb`](./2-wf.ipynb)
 =#
 
 # ## Preparation
@@ -40,10 +35,10 @@ using JSServe  # hide
 Page(; exportable=true, offline=true)  # hide
 
 # Path of current tutorial
-CUR_DIR = "4-realspace"
+PWD = "4-realspace"
 
 # Read the 1st WF
-xsf = read_xsf("$CUR_DIR/graphene_00001.xsf");
+xsf = read_xsf("$PWD/graphene_00001.xsf");
 # Visualize with `WannierPlots.jl`,
 pos = inv(xsf.primvec) * xsf.atom_positions  # to fractional coordinates
 atom_numbers = get_atom_number(xsf.atoms)  # to integer atomic numbers

@@ -60,18 +60,14 @@ conduction manifolds without human intervention.
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`6-split.ipynb`](./6-split.ipynb)
-    - Julia script: [`6-split.jl`](./6-split.jl)
+    - Jupyter notebook: [`tutorial.ipynb`](./tutorial.ipynb)
+    - Julia script: [`tutorial.jl`](./tutorial.jl)
 =#
 
 # ## Preparation
 # Load the package
 using Wannier
 using WannierPlots
-
-# Path of current tutorial
-PWD = "."
-cd(PWD)
 
 #=
 ## Model generation

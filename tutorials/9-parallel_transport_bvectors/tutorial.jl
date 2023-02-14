@@ -35,18 +35,14 @@ generate a custom set of b-vectors, write them to a `nnkp` file, rerun
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`9-parallel_transport_bvectors.ipynb`](./9-parallel_transport_bvectors.ipynb)
-    - Julia script: [`9-parallel_transport_bvectors.jl`](./9-parallel_transport_bvectors.jl)
+    - Jupyter notebook: [`tutorial.ipynb`](./tutorial.ipynb)
+    - Julia script: [`tutorial.jl`](./tutorial.jl)
 =#
 
 # ## Preparation
 # Load the package
 using Wannier
 using WannierPlots
-
-# Path of current tutorial
-PWD = "."
-cd(PWD)
 
 #=
 ## Model generation

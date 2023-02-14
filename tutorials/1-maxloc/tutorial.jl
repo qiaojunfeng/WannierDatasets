@@ -18,18 +18,14 @@ the silicon valence bands. We need to
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`1-maxloc.ipynb`](./1-maxloc.ipynb)
-    - Julia script: [`1-maxloc.jl`](./1-maxloc.jl)
+    - Jupyter notebook: [`tutorial.ipynb`](./tutorial.ipynb)
+    - Julia script: [`tutorial.jl`](./tutorial.jl)
 =#
 
 # ## Preparation
 # Load the package
 using Wannier
 using Printf  # for pretty print
-
-# Path of current tutorial
-PWD = "."
-cd(PWD)
 
 # ### Tips on initial guess
 #=

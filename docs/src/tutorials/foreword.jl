@@ -13,7 +13,7 @@ point could be the tutorials of
 [`Wannier90`](https://github.com/wannier-developers/wannier90).
 
 The input files of each tutorial can be found in the
-[`wjl-tutorials`](https://github.com/qiaojunfeng/wjl-tutorials/) repo.
+[`WannierDocs.jl`](https://github.com/qiaojunfeng/WannierDocs.jl/) repo.
 First `git clone` the repo, and run it when you are going through the tutorials.
 
 !!! warning

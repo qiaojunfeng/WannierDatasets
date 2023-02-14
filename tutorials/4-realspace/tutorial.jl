@@ -22,17 +22,13 @@ In this tutorial, we will disentangle the 2D graphene, and compute its realspace
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`4-realspace.ipynb`](./4-realspace.ipynb)
-    - Julia script: [`4-realspace.jl`](./4-realspace.jl)
+    - Jupyter notebook: [`tutorial.ipynb`](./tutorial.ipynb)
+    - Julia script: [`tutorial.jl`](./tutorial.jl)
 =#
 
 # ## Preparation
 # Load the package
 using Wannier
-
-# Path of current tutorial
-PWD = "."
-cd(PWD)
 
 #=
 ## Model generation
@@ -85,7 +81,7 @@ The [`write_realspace_wf`](@ref) function reads the `UNK` files,
 compute the real space WFs in a `n_supercells`-sized super cell,
 and write them to `xsf` files,
 =#
-write_realspace_wf("wjl", model; unkdir=CUR_DIR, n_supercells=3, format=:xsf)
+write_realspace_wf("wjl", model; n_supercells=3, format=:xsf)
 
 #=
 Now, open the `wjl_00001.xsf`, etc. files with a 3D
@@ -135,7 +131,7 @@ in real space, e.g., computing WF centers.
 First we need to read the `UNK` files, and construct the real space WFs
 in a `3 * 3 * 1`-sized super cell (i.e., `model.kgrid`),
 =#
-rgrid, W = read_realspace_wf(model, model.kgrid, CUR_DIR)
+rgrid, W = read_realspace_wf(model, model.kgrid)
 #=
 The real space WFs `W`, are defined on the grid `rgrid`.
 

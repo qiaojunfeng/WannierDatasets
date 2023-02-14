@@ -30,17 +30,13 @@ WFs to be centered at the bond centers, i.e., bonding and anti-bonding orbitals.
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`7-constrain_center.ipynb`](./7-constrain_center.ipynb)
-    - Julia script: [`7-constrain_center.jl`](./7-constrain_center.jl)
+    - Jupyter notebook: [`tutorial.ipynb`](./tutorial.ipynb)
+    - Julia script: [`tutorial.jl`](./tutorial.jl)
 =#
 
 # ## Preparation
 # Load the package
 using Wannier
-
-# Path of current tutorial
-PWD = "."
-cd(PWD)
 
 #=
 ## Model generation

@@ -109,8 +109,6 @@ while [`Model`](@ref Model) works only for Wannierization.
 
 ```@docs
 InterpModel
-InterpModel(kRvectors, kpath, H)
-InterpModel(model::Model; mdrs::Bool=true)
 ```
 
 ## Band structure

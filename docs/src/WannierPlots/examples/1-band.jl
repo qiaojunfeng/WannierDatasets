@@ -22,7 +22,7 @@ using Wannier: read_w90_band
 using WannierPlots
 
 # Path of current tutorial
-CUR_DIR = "3-band"
+PWD = "3-band"
 
 # Read bands data files
 recip_lattice = [
@@ -30,7 +30,7 @@ recip_lattice = [
     1.15701 -1.15701 1.15701
     1.15701 1.15701 -1.15701
 ]
-kpi, E = read_w90_band("$CUR_DIR/si2", recip_lattice)
+kpi, E = read_w90_band("$PWD/si2", recip_lattice)
 #=
 !!! tip
 

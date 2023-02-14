@@ -7,8 +7,13 @@ using WannierPlots
 # I put each tutorial inside the corresponding subdir in `tutorials/`,
 # and let Literate.jl generates markdown from them.
 # Then Documenter.jl processes the markdown and renders HTML.
-# In this way, the url of the tutorial pages are `tutorials/<tutorial_name>`
-# instead of `../tutorials/<tutorial_name>` which breaks the hyperlink.
+
+# I will copy input files to the Documenter.jl build folder, so I disable
+# the auto clean feature of Documenter.jl.
+# However, I still want a clean build every time, so I manually clean the build folder.
+const BUILD_DIR = joinpath(@__DIR__, "build")
+isdir(BUILD_DIR) && rm(BUILD_DIR; recursive=true, force=true)
+
 
 # the folder where the Literate.jl tutorial scripts are stored
 const TUTORIALS_SRCDIR = joinpath(@__DIR__, "../tutorials")
@@ -16,6 +21,7 @@ const TUTORIALS_SRCDIR = joinpath(@__DIR__, "../tutorials")
 const TUTORIALS_OUTDIR = joinpath(@__DIR__, "src/tutorials")
 # the folder for saving HTML plots, also the folder for the final HTML pages
 const TUTORIALS_BUILDDIR = joinpath(@__DIR__, "build/tutorials")
+
 
 # Copied from
 # https://github.com/thchr/Brillouin.jl/blob/fad88c5b6965fe4bd59e725ea60655348d36ce0f/docs/make.jl#L4
@@ -28,7 +34,7 @@ struct HTMLPlot
     h::Int # desired display height in pixels
 end
 HTMLPlot(p) = HTMLPlot(p, 400)
-const ROOT_DIR = TUTORIALS_BUILDDIR
+const ROOT_DIR = joinpath(@__DIR__, "build")
 const PLOT_DIR = joinpath(ROOT_DIR, "plots")
 function Base.show(io::IO, ::MIME"text/html", p::HTMLPlot)
     mkpath(PLOT_DIR)
@@ -36,42 +42,25 @@ function Base.show(io::IO, ::MIME"text/html", p::HTMLPlot)
     PlotlyJS.savefig(p.p, path; format="html")
     return print(
         io,
-        "<object type=\"text/html\" data=\"../$(relpath(path, ROOT_DIR))\" style=\"width:100%;height:$(p.h)px;\"></object>",
+        "<object type=\"text/html\" data=\"/$(relpath(path, ROOT_DIR))\" style=\"width:100%;height:$(p.h)px;\"></object>",
     )
 end
 # ---------------------------------------------------------------------------------------- #
 
-"""
-    update_pwd(file, dir)
 
-Change the current directory path in the markdown file, so that the Documenter.makedocs
-could execute in the correct folder.
-"""
-function update_pwd(dir::AbstractString)
-
-    function _update(content)
-        content = replace(content, "PWD = \".\"\n" => "PWD = \"$dir\"\n")
-        return content
-    end
-
-    return _update
-
-    # (tmppath, tmpio) = mktemp()
-    # open(file) do io
-    #     for line in eachline(io, keep=true) # keep so the new line isn't chomped
-    #         if "PWD = \".\"\n" == line
-    #             line = "PWD = \"$dir\"\n"
-    #         end
-    #         write(tmpio, line)
-    #     end
-    # end
-    # close(tmpio)
-    # mv(tmppath, file, force=true)
-end
-
+# process the tutorial foreword
+Literate.markdown(joinpath(TUTORIALS_OUTDIR, "foreword.jl"), TUTORIALS_OUTDIR)
 
 for dir in readdir(TUTORIALS_SRCDIR)
-    isdir(dir) || continue
+    # skip folders starting with underscore
+    # Some times I put work-in-progress folders there but do not want them to be
+    # processed by Literate.jl and Documenter.jl.
+    isdir(joinpath(TUTORIALS_SRCDIR, dir)) && !startswith(dir, "_") || continue
+
+    println("* Processing tutorial: $dir *")
+
+    # quick hack to skip generated folders during development
+    # startswith(dir, [Char('0' + i) for i in 1:9]) && continue
 
     # jl = filter(x -> endswith(x, ".jl"), readdir(joinpath(TUTORIALS_SRCDIR, dir)))
     # I assume the tutorial file is named as `tutorial.jl`
@@ -80,62 +69,97 @@ for dir in readdir(TUTORIALS_SRCDIR)
     file = joinpath(TUTORIALS_SRCDIR, dir, jl)
     isfile(file) || error("tutorial file not found: $file")
 
-    # I need to change the current directory path in the markdown file,
-    # because the Documenter.makedocs expects a common `workdir`.
-    # Also rename file to avoid name clash.
-    md = "$dir.md"
-    Literate.markdown(file, TUTORIALS_OUTDIR; name=md, postprocess=update_pwd(dir))
+    outdir = joinpath(TUTORIALS_OUTDIR, dir)
 
-    # the notebook needs to be executed in the correct path to read `amn` etc. files,
-    # however, Literate.jl will execute the notebook in the output dir,
-    # so I need to first output in workdir, then move to build dir
-    workdir = joinpath(TUTORIALS_SRCDIR, dir)
-    ipynb = "$dir.ipynb"  # rename to avoid name clash
-    Literate.notebook(file, workdir; name=ipynb)
-    mv(joinpath(workdir, ipynb), joinpath(TUTORIALS_OUTDIR, ipynb); force=true)
+    # generate markdown which will be executed by Documenter.jl
+    Literate.markdown(file, outdir)
 
-    # won't execute the generated jl script, only need to rename
-    Literate.script(file, TUTORIALS_OUTDIR; name="$dir.jl")
+    # the Documenter.jl execution needs input files, so I copy them to
+    # the build folder where the markdown will be executed
+    for f in readdir(joinpath(TUTORIALS_SRCDIR, dir))
+        # skip the tutorial file
+        f == jl && continue
+
+        src = joinpath(TUTORIALS_SRCDIR, dir, f)
+        dstdir = joinpath(TUTORIALS_BUILDDIR, dir)
+        dst = joinpath(dstdir, f)
+
+        mkpath(dstdir)
+        cp(src, dst; force=true, follow_symlinks=true)
+    end
+
+    # I skip the execution of the notebook, because
+    # 1. it increases the build time
+    # 2. somehow ipynb does not show the plots correctly, e.g. bands, WFs, etc.
+    # 3. random numbers during execution might cause the notebook output to be different
+    # 4. I will let the user download an empty notebook, so that at least they will run once :-)
+    Literate.notebook(file, outdir; execute=false)
+
+    # generate a cleansed version w/o comments, so that user can run in CLI
+    Literate.script(file, outdir)
 end
 
+
+# process the WannierPlots examples
+const PLOTS_EXAMPLES_SRCDIR = joinpath(@__DIR__, "src/WannierPlots/examples")
+
+for jl in readdir(PLOTS_EXAMPLES_SRCDIR)
+    # only process jl scripts
+    isfile(joinpath(PLOTS_EXAMPLES_SRCDIR, jl)) && endswith(jl, ".jl") || continue
+
+    file = joinpath(PLOTS_EXAMPLES_SRCDIR, jl)
+    println("* Processing WannierPlots example: $jl *")
+
+    # quick hack to skip generated folders during development
+    # startswith(jl, [Char('0' + i) for i in 1:3]) && continue
+
+    # save the markdown just inside the srcdir
+    Literate.markdown(file, PLOTS_EXAMPLES_SRCDIR)
+
+    # I skip the execution of the notebook
+    Literate.notebook(file, PLOTS_EXAMPLES_SRCDIR; execute=false)
+end
+
+# Copy the input files to the build folder, so that Documenter.jl can correctly
+# execute the markdown files.
+const PLOTS_EXAMPLES_BUILDDIR = joinpath(@__DIR__, "build/WannierPlots/examples")
+mkpath(PLOTS_EXAMPLES_BUILDDIR)
+
+for dir in ["3-band", "4-realspace", "8-fermi_surface"]
+    src = joinpath(TUTORIALS_SRCDIR, dir)
+    dst = joinpath(PLOTS_EXAMPLES_BUILDDIR, dir)
+    cp(src, dst; force=true)
+end
+
+
+# generate the HTML pages by Documenter.jl
 makedocs(;
     sitename="Wannier.jl",
     authors="Junfeng Qiao and contributors.",
+    clean=false,  # do not clean the build folder before building
     modules=[WannierIO, Wannier, WannierPlots],
-    # the `example` blocks in the tutorials need correct path to read files
-    workdir=TUTORIALS_SRCDIR,
     pages=[
         "Home" => "index.md",
         "Getting Started" => "start.md",
-        # The tutorials will be processed by Literate.jl.
+        # the tutorials are auto-generated by Literate
         # Here you can specify the name of tutorial page shown in the left sidebar,
-        # by changing the key of the dict.
+        # by changing the key of the pair.
         "Tutorial" => [
-            "Foreword" => "tutorials/0-foreword.md",
-            "Maximal localization" => "tutorials/1-maxloc.md",
-            "Disentanglement" => "tutorials/2-disentangle.md",
-            "Band structure" => "tutorials/3-band.md",
-            "Real space WF" => "tutorials/4-realspace.md",
-            "Parallel transport" => "tutorials/5-parallel_transport.md",
-            "Split valence/conduction" => "tutorials/6-split.md",
-            "Constrain WF center" => "tutorials/7-constrain_center.md",
-            "Fermi surface" => "tutorials/8-fermisurf.md",
+            "Foreword" => "tutorials/foreword.md",
+            "Maximal localization" => "tutorials/1-maxloc/tutorial.md",
+            "Disentanglement" => "tutorials/2-disentangle/tutorial.md",
+            "Band structure" => "tutorials/3-band/tutorial.md",
+            "Real space WF" => "tutorials/4-realspace/tutorial.md",
+            "Parallel transport" => "tutorials/5-parallel_transport/tutorial.md",
+            "Split valence/conduction" => "tutorials/6-split/tutorial.md",
+            "Constrain WF center" => "tutorials/7-constrain_center/tutorial.md",
+            "Fermi surface" => "tutorials/8-fermi_surface/tutorial.md",
         ],
         "Theory" => [
             "Algorithm" => "theory/algorithm.md",
             "Normalization" => "theory/normalization.md",
         ],
         "API" => [
-            "WannierIO" => [
-                "Home" => "index.md",
-                "API" => [
-                    "Convention" => "api/convention.md",
-                    "Util" => "api/util.md",
-                    "Wannier90" => "api/w90.md",
-                    "Volumetric data" => "api/volumetric.md",
-                    "QE" => "api/qe.md",
-                ],
-            ],
             "Utility" => "api/util.md",
             "Input/Output" => "api/io.md",
             "B vector" => "api/bvector.md",
@@ -144,17 +168,29 @@ makedocs(;
             "Interpolation" => "api/interpolation.md",
             "Real space" => "api/realspace.md",
             "Command line" => "api/cli.md",
+        ],
+        "Additional packages" => [
+            "WannierIO" => [
+                "Home" => "WannierIO/index.md",
+                "API" => [
+                    "Convention" => "WannierIO/api/convention.md",
+                    "Util" => "WannierIO/api/util.md",
+                    "Wannier90" => "WannierIO/api/w90.md",
+                    "Volumetric data" => "WannierIO/api/volumetric.md",
+                    "QE" => "WannierIO/api/qe.md",
+                ],
+            ],
             "WannierPlots" => [
-                "Home" => "index.md",
-                # the tutorials will be processed by Literate
-                "Tutorial" => [
-                    "Band structure" => "tutorials/1-band.md",
-                    "Real space WFs" => "tutorials/2-wf.md",
-                    # "Fermi surface" => "tutorials/3-fermisurf.md",
+                "Home" => "WannierPlots/index.md",
+                # the examples are auto-generated by Literate
+                "Examples" => [
+                    "Band structure" => "WannierPlots/examples/1-band.md",
+                    "Real space WFs" => "WannierPlots/examples/2-wf.md",
+                    "Fermi surface" => "WannierPlots/examples/3-fermisurf.md",
                 ],
                 "API" => [
-                    "Band" => "api/band.md",
-                    "Real space" => "api/realspace.md",
+                    "Band" => "WannierPlots/api/band.md",
+                    "Real space" => "WannierPlots/api/realspace.md",
                     # "Fermi surface" => "api/fermisurf.md",
                 ],
             ]

@@ -18,8 +18,8 @@ the copper and then compute the Fermi surface.
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`8-fermi_surface.ipynb`](./8-fermi_surface.ipynb)
-    - Julia script: [`8-fermi_surface.jl`](./8-fermi_surface.jl)
+    - Jupyter notebook: [`tutorial.ipynb`](./tutorial.ipynb)
+    - Julia script: [`tutorial.jl`](./tutorial.jl)
 =#
 
 # ## Preparation
@@ -27,10 +27,6 @@ the copper and then compute the Fermi surface.
 using WannierIO
 using Wannier
 using WannierPlots
-
-# Path of current tutorial
-PWD = "."
-cd(PWD)
 
 #=
 !!! tip

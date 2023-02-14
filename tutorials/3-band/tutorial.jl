@@ -16,8 +16,8 @@ In this tutorial, we will use Wananier interpolation to calculate the band struc
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`3-band.ipynb`](./3-band.ipynb)
-    - Julia script: [`3-band.jl`](./3-band.jl)
+    - Jupyter notebook: [`tutorial.ipynb`](./tutorial.ipynb)
+    - Julia script: [`tutorial.jl`](./tutorial.jl)
 =#
 
 # ## Preparation
@@ -30,10 +30,6 @@ real space WFs, etc.
 This separation reduces the compiling latency of `Wannier.jl`, and avoids
 introduing too many package dependencies that are irrelevant to Wannierization.
 =#
-
-# Path of current tutorial
-PWD = "."
-cd(PWD)
 
 #=
 !!! tip

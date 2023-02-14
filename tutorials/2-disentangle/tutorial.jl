@@ -18,18 +18,14 @@ the silicon valence + conduction bands. As usual, we need to
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`2-disentangle.ipynb`](./2-disentangle.ipynb)
-    - Julia script: [`2-disentangle.jl`](./2-disentangle.jl)
+    - Jupyter notebook: [`tutorial.ipynb`](./tutorial.ipynb)
+    - Julia script: [`tutorial.jl`](./tutorial.jl)
 =#
 
 # ## Preparation
 # Load the package
 using Wannier
 using Printf  # for pretty print
-
-# Path of current tutorial
-PWD = "."
-cd(PWD)
 
 #=
 !!! tip

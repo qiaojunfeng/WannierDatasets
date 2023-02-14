@@ -34,18 +34,14 @@ thus more efficient than SCDM, which requires wavefunctions in real space.
 !!! tip
 
     This is a HTML version of the tutorial, you can download corresponding
-    - Jupyter notebook: [`5-parallel_transport.ipynb`](./5-parallel_transport.ipynb)
-    - Julia script: [`5-parallel_transport.jl`](./5-parallel_transport.jl)
+    - Jupyter notebook: [`tutorial.ipynb`](./tutorial.ipynb)
+    - Julia script: [`tutorial.jl`](./tutorial.jl)
 =#
 
 # ## Preparation
 # Load the package
 using Wannier
 using WannierPlots
-
-# Path of current tutorial
-PWD = "."
-cd(PWD)
 
 #=
 ## Model generation
@@ -214,7 +210,7 @@ Main.HTMLPlot(P, 500)  # hide
 Again, rerun with a finer kgrid and see the improvements of interpolation quality.
 Also, you can try to plot the WFs, by first truncating the `unk`
 =#
-Wannier.truncate_unk(CUR_DIR, [7], "truncate")
+Wannier.truncate_unk(".", [7], "truncate")
 # the new `unk`s are stored in a subfolder `truncate`,
 # now write the realspace WF
 write_realspace_wf(
