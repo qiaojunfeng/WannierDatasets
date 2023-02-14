@@ -144,6 +144,20 @@ makedocs(;
             "Interpolation" => "api/interpolation.md",
             "Real space" => "api/realspace.md",
             "Command line" => "api/cli.md",
+            "WannierPlots" => [
+                "Home" => "index.md",
+                # the tutorials will be processed by Literate
+                "Tutorial" => [
+                    "Band structure" => "tutorials/1-band.md",
+                    "Real space WFs" => "tutorials/2-wf.md",
+                    # "Fermi surface" => "tutorials/3-fermisurf.md",
+                ],
+                "API" => [
+                    "Band" => "api/band.md",
+                    "Real space" => "api/realspace.md",
+                    # "Fermi surface" => "api/fermisurf.md",
+                ],
+            ]
         ],
     ],
 )
