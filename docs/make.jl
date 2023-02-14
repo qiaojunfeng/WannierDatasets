@@ -154,6 +154,7 @@ makedocs(;
             "Split valence/conduction" => "tutorials/6-split/tutorial.md",
             "Constrain WF center" => "tutorials/7-constrain_center/tutorial.md",
             "Fermi surface" => "tutorials/8-fermi_surface/tutorial.md",
+            "Parallel transport with custom b-vectors" => "tutorials/9-parallel_transport_bvectors/tutorial.md",
         ],
         "Theory" => [
             "Algorithm" => "theory/algorithm.md",
