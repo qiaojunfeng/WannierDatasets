@@ -12,7 +12,7 @@ binary=false
 
 # change these to your own paths
 w90chk2chk="$HOME/git/wannier90/w90chk2chk.x"
-wannier="$HOME/.julia/bin/wannier"
+wannier="$HOME/.julia/bin/wjl"
 
 valence_dir='val'
 conduction_dir='cond'
