@@ -39,6 +39,15 @@ else
 fi
 printf '\n\n'
 
+# if `--config` in args, I won't change win since I don't
+# know what are the subdir names
+for arg in "$@"; do
+    if [ "$arg" == "--config" ]; then
+        echo "Using config toml, please edit win files manually"
+        exit 1
+    fi
+done
+
 # function to prepare win file
 modify_win() {
     local seedname=$1
