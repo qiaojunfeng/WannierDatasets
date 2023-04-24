@@ -1,0 +1,14 @@
+&inputpp
+    outdir = '../out/'
+    prefix = 'cri3'
+    seedname = 'cri3_up'
+    spin_component = 'up'
+    atom_proj = .true.
+    ! exclude Cr:3s,3p, keep 3d,4s
+    atom_proj_exclude = 1,2,3,4, 11,12,13,14
+    write_amn = .true.
+!   write_spn = .true.
+    write_mmn = .true.
+    write_unk = .true.
+    wvfn_formatted = .false.
+/
