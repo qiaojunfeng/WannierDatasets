@@ -1,12 +1,9 @@
-# # Foreword to the tutorials
+# Foreword to the tutorials
 
-#=
 ```@meta
 CurrentModule = Wannier
 ```
-=#
 
-#=
 These tutorials assume you have already been familiar with the
 Wannierization workflow using `QE` and `Wannier90`, a good starting
 point could be the tutorials of
@@ -26,5 +23,3 @@ First `git clone` the repo, and run it when you are going through the tutorials.
 
     You should rerun the calculations with production-quality convergence
     parameters, and the results should be much better.
-
-=#

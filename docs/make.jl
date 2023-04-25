@@ -1,19 +1,16 @@
 using Documenter
-using Literate
 using WannierIO
 using Wannier
 using WannierPlots
 
-# I put each tutorial inside the corresponding subdir in `tutorials/`,
-# and let Literate.jl generates markdown from them.
-# Then Documenter.jl processes the markdown and renders HTML.
+include("common.jl")
 
-# I will copy input files to the Documenter.jl build folder, so I disable
-# the auto clean feature of Documenter.jl.
-# However, I still want a clean build every time, so I manually clean the build folder.
-const BUILD_DIR = joinpath(@__DIR__, "build")
-isdir(BUILD_DIR) && rm(BUILD_DIR; recursive=true, force=true)
-
+#=
+I put each tutorial inside the corresponding subdir in `tutorials/`
+(so that the tutorial script is in the same folder as the input files, e.g.
+win, amn, mmn, eig), and let Literate.jl generates markdown from them.
+Then Documenter.jl processes the markdown and renders HTML.
+=#
 
 # the folder where the Literate.jl tutorial scripts are stored
 const TUTORIALS_SRCDIR = joinpath(@__DIR__, "../tutorials")
@@ -22,126 +19,32 @@ const TUTORIALS_OUTDIR = joinpath(@__DIR__, "src/tutorials")
 # the folder for saving HTML plots, also the folder for the final HTML pages
 const TUTORIALS_BUILDDIR = joinpath(@__DIR__, "build/tutorials")
 
-
-# Copied from
-# https://github.com/thchr/Brillouin.jl/blob/fad88c5b6965fe4bd59e725ea60655348d36ce0f/docs/make.jl#L4
-# ---------------------------------------------------------------------------------------- #
-# make PlotlyJS plots showable in ```@example ``` blocks, following the approach suggested
-# in https://github.com/fredrikekre/Literate.jl/issues/126
-using PlotlyJS
-struct HTMLPlot
-    p
-    h::Int # desired display height in pixels
-end
-HTMLPlot(p) = HTMLPlot(p, 400)
-const ROOT_DIR = joinpath(@__DIR__, "build")
-const PLOT_DIR = joinpath(ROOT_DIR, "plots")
-function Base.show(io::IO, ::MIME"text/html", p::HTMLPlot)
-    mkpath(PLOT_DIR)
-    path = joinpath(PLOT_DIR, string(hash(p) % UInt32, ".html"))
-    PlotlyJS.savefig(p.p, path; format="html")
-    return print(
-        io,
-        "<object type=\"text/html\" data=\"/$(relpath(path, ROOT_DIR))\" style=\"width:100%;height:$(p.h)px;\"></object>",
-    )
-end
-# ---------------------------------------------------------------------------------------- #
+#=
+I will copy necessary input files (mmn, ...) to the Documenter.jl build folder,
+so I disable the auto clean feature of Documenter.jl.
+However, I still want a clean build every time, so I manually clean the
+build folder here.
+=#
+const BUILD_DIR = joinpath(@__DIR__, "build")
+isdir(BUILD_DIR) && rm(BUILD_DIR; recursive=true, force=true)
 
 
-# process the tutorial foreword
-Literate.markdown(joinpath(TUTORIALS_OUTDIR, "foreword.jl"), TUTORIALS_OUTDIR)
-
-for dir in readdir(TUTORIALS_SRCDIR)
-    # skip folders starting with underscore
-    # Some times I put work-in-progress folders there but do not want them to be
-    # processed by Literate.jl and Documenter.jl.
-    isdir(joinpath(TUTORIALS_SRCDIR, dir)) && !startswith(dir, "_") || continue
-
-    println("* Processing tutorial: $dir *")
-
-    # quick hack to skip generated folders during development
-    # startswith(dir, [Char('0' + i) for i in 1:9]) && continue
-
-    # jl = filter(x -> endswith(x, ".jl"), readdir(joinpath(TUTORIALS_SRCDIR, dir)))
-    # I assume the tutorial file is named as `tutorial.jl`
-    jl = "tutorial.jl"
-
-    file = joinpath(TUTORIALS_SRCDIR, dir, jl)
-    isfile(file) || error("tutorial file not found: $file")
-
-    outdir = joinpath(TUTORIALS_OUTDIR, dir)
-
-    # generate markdown which will be executed by Documenter.jl
-    Literate.markdown(file, outdir)
-
-    # the Documenter.jl execution needs input files, so I copy them to
-    # the build folder where the markdown will be executed
-    for f in readdir(joinpath(TUTORIALS_SRCDIR, dir))
-        # skip the tutorial file
-        f == jl && continue
-
-        src = joinpath(TUTORIALS_SRCDIR, dir, f)
-        dstdir = joinpath(TUTORIALS_BUILDDIR, dir)
-        dst = joinpath(dstdir, f)
-
-        mkpath(dstdir)
-        cp(src, dst; force=true, follow_symlinks=true)
-    end
-
-    # I skip the execution of the notebook, because
-    # 1. it increases the build time
-    # 2. somehow ipynb does not show the plots correctly, e.g. bands, WFs, etc.
-    # 3. random numbers during execution might cause the notebook output to be different
-    # 4. I will let the user download an empty notebook, so that at least they will run once :-)
-    Literate.notebook(file, outdir; execute=false)
-
-    # generate a cleansed version w/o comments, so that user can run in CLI
-    Literate.script(file, outdir)
-end
-
-
-# process the WannierPlots examples
-const PLOTS_EXAMPLES_SRCDIR = joinpath(@__DIR__, "src/WannierPlots/examples")
-
-for jl in readdir(PLOTS_EXAMPLES_SRCDIR)
-    # only process jl scripts
-    isfile(joinpath(PLOTS_EXAMPLES_SRCDIR, jl)) && endswith(jl, ".jl") || continue
-
-    file = joinpath(PLOTS_EXAMPLES_SRCDIR, jl)
-    println("* Processing WannierPlots example: $jl *")
-
-    # quick hack to skip generated folders during development
-    # startswith(jl, [Char('0' + i) for i in 1:3]) && continue
-
-    # save the markdown just inside the srcdir
-    Literate.markdown(file, PLOTS_EXAMPLES_SRCDIR)
-
-    # I skip the execution of the notebook
-    Literate.notebook(file, PLOTS_EXAMPLES_SRCDIR; execute=false)
-end
-
-# Copy the input files to the build folder, so that Documenter.jl can correctly
-# execute the markdown files.
-const PLOTS_EXAMPLES_BUILDDIR = joinpath(@__DIR__, "build/WannierPlots/examples")
-mkpath(PLOTS_EXAMPLES_BUILDDIR)
-
-for dir in ["3-band", "4-realspace", "8-fermi_surface"]
-    src = joinpath(TUTORIALS_SRCDIR, dir)
-    dst = joinpath(PLOTS_EXAMPLES_BUILDDIR, dir)
-    cp(src, dst; force=true)
-end
+# Process tutorials by Literate.jl
+include("literate.jl")
 
 
 # generate the HTML pages by Documenter.jl
 makedocs(;
     sitename="Wannier.jl",
     authors="Junfeng Qiao and contributors.",
-    clean=false,  # do not clean the build folder before building
+    # do not clean the build folder before building, since I have copied
+    # manually all the input files (mmn, ...) to the build folder
+    clean=false,
     modules=[WannierIO, Wannier, WannierPlots],
     pages=[
         "Home" => "index.md",
         "Getting Started" => "start.md",
-        # the tutorials are auto-generated by Literate
+        # the tutorials are auto-generated by Literate.jl
         # Here you can specify the name of tutorial page shown in the left sidebar,
         # by changing the key of the pair.
         "Tutorial" => [

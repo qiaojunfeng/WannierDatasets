@@ -25,7 +25,7 @@ Pages = ["model.md"]
 
 ```@autodocs
 Modules = [Wannier]
-Pages   = ["model.jl"]
+Pages   = ["src/model.jl"]  # explicitly add "src/" to avoid matching InterpModel
 ```
 
 ## Spread
