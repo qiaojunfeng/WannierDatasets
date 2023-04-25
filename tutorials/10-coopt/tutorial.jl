@@ -8,15 +8,16 @@ CurrentModule = Wannier
 
 #=
 Usually, for spin-polarized systems, we run two independent Wannierizations
-for th spin-up and spin-down channels. However, in some cases, e.g., computing
+for the spin-up and spin-down channels. However, in some cases, e.g., computing
 magnetic exchange constants within an Heisenberg model, we need to make sure
-the spin-up and spin-down WFs having as similar as possible real-space shapes,
-and preferably centered on each atoms.
+the spin-up and spin-down WFs have as similar as possible real-space shapes,
+and are centered on each atoms.
 
 In this tutorial, we will show how to co-optimize the spin-up and spin-down
 WFs, with two constraints:
-1. center constraints to be atom-centered WFs
-2. spin-up and down overlap constraints to be as similar as possible
+1. WF center constraint to construct atom-centered WFs
+2. spin-up and down overlap constraint to make sure each pair of
+    spin-up and spin-down WFs are as similar as possible
 
 We will Wannierize a 2D ``CrI_3`` system, using pseudo-atomic-orbital projections
 as the starting guess (computed by QE).
@@ -24,10 +25,10 @@ as the starting guess (computed by QE).
 ## Outline
 
 1. plot QE band structure as a reference
-2. construct a [`MagModel`](@ref), by reading the `win`, `amn`, `mmn`, and `eig`
-    files of spin-up and spin-down calculations
-3. disentangle, without constraints
-4. disentangle, with constraints
+2. run two independent Wannierizations of spin-up and spin-down channels
+3. construct a [`MagModel`](@ref) that merges the two spin channels
+4. disentangle, with overlap constraint
+5. disentangle, with both WF center and overlap constraints
 
 !!! tip
 
@@ -37,7 +38,7 @@ as the starting guess (computed by QE).
 =#
 
 # ## Preparation
-# Load the package
+# Load the packages
 using WannierIO
 using Wannier
 using WannierPlots
@@ -64,7 +65,7 @@ kpath = Wannier.get_kpath(win.unit_cell, win.kpoint_path)
 #=
 then we construct an [`KPathInterpolant`](@ref) object which stores the exact
 kpoint coordinates to be interpolated, using 100 points in the 1st kpath segment
-(equivalent to Wannier90 `bands_num_points`).
+(equivalent to Wannier90 input `bands_num_points`).
 =#
 kpi = Wannier.interpolate_w90(kpath, 100)
 
@@ -79,8 +80,9 @@ We will use the [`read_w90`](@ref) function to read the
 `win`, `amn`, `mmn`, and `eig` files, and construct two [`Model`](@ref)s
 for spin-up and spin-down channels.
 Note the frozen windows for the two channels are set independently
-according to the `dis_froz_max` inside the `win` files;
-in our case, they are both `dis_froz_max = -2 eV` since there is a gap.
+according to the `dis_froz_max` inside the two `win` files, respectively;
+in our case, they are both `dis_froz_max = -2 eV` since there are gaps
+in both spin channels.
 =#
 model_up = read_w90("up/cri3_up")
 model_dn = read_w90("dn/cri3_dn")
@@ -125,8 +127,15 @@ Main.HTMLPlot(P, 500)  # hide
 P = plot_band_diff(kpi, qe.E_dn, E_dn_projonly; fermi_energy=qe.fermi_energy)
 Main.HTMLPlot(P, 500)  # hide
 
-# and this shows the spin-up and spin-down bands from Wannier interpolation
-# in one figure
+#=
+As can be seen from the above two figures, the projection-only WFs do not
+reproduce DFT bands, i.e., they do not correctly describe the electronic
+structure of the system, thus should not be used for physical property
+calculations.
+
+As a side node, we can also plot the Wannier-interpolated spin-up and down bands
+in one figure,
+=#
 P = plot_band_diff(kpi, E_up_projonly, E_dn_projonly; fermi_energy=qe.fermi_energy)
 Main.HTMLPlot(P, 500)  # hide
 
@@ -182,14 +191,12 @@ calculations.
 =#
 
 #=
-## Disentanglement of two spin channels with constraints
+## Disentanglement with spin-up-down overlap constraint
 
-In this section, we will impose both WF center constraints, and spin-up
-and spin-down WF overlap constraints, to disentangle simeultaneously
-the two sets of WFs, and construct WFs that can accurately interpolate
-band structures, and also have the same centers and spreads.
-Thus, these WFs satisfy the assumptions for magnetic exchange constants
-calculations.
+In this section, we will impose spin-up and spin-down WF overlap constraint,
+to disentangle simeultaneously the two sets of WFs, so that they can accurately
+interpolate band structures, and more importantly, have the same centers and
+spreads.
 
 We first construct a [`MagModel`](@ref) for the two spin channels,
 using the previous two `Model`s and an additional overlap matrix.
@@ -209,7 +216,7 @@ Here `λs` is the Lagrange multiplier for the constraint.
 U_up, U_dn = disentangle(model, λs);
 #=
 The resulting spin-up and spin-down WFs have very similar centers and spreads,
-however, their centers drift from the original positions which are centered
+however, their centers drift from the original positions which were centered
 on atoms.
 =#
 omega(model, U_up, U_dn, λs)
@@ -218,7 +225,25 @@ omega(model, U_up, U_dn, λs)
 omega(model, U_up_mlwf, U_dn_mlwf, λs)
 
 #=
-Now let's disentangle with both center and spin overlap constraints.
+As can be seen from the above spin-up-down overlaps `<↑|↓>`,
+the two sets of WFs are sort of randomly distributed, some overlaps are 0,
+thus the two Hamiltonians are not using the same real-space basis functions.
+=#
+
+#=
+## Disentanglement with both WF center and overlap constraints
+
+Now, we impose both WF center constraints and spin-up-down WF overlap
+constraints, to disentangle simeultaneously the two sets of WFs.
+Thus, our final WFs can accurately interpolate band structures,
+have the same WF centers and spreads, and are atom-centered.
+These WFs satisfy the assumptions for magnetic exchange constants
+calculations, i.e., constructing a Heisenberg model with
+1. atom-centered orbitals with localized magnetic moments;
+2. the spin-up and spin-down orbitals can map one-by-one to each other
+    so they have the same real-space basis;
+3. both spin channels accurately describe the electronic structure of
+    the system.
 
 Since we want atom-centered WFs, our target centers are just atom positions.
 We store our target WF centers in a column-wise matrix,
@@ -237,7 +262,7 @@ r₀[:, 25:28] .= model_up.atom_positions[:, 6]
 r₀[:, 29:32] .= model_up.atom_positions[:, 7]
 r₀[:, 33:36] .= model_up.atom_positions[:, 8]
 
-# to Cartesian coordinates
+# convert to Cartesian coordinates
 r₀ = model.up.lattice * r₀
 
 #=
@@ -262,9 +287,15 @@ omega(model, U_up, U_dn, r₀, λc, λs)
 omega(model, U_up_mlwf, U_dn_mlwf, r₀, λc, λs)
 
 #=
-Thus, the two constraints work properly: the resulting WFs
-are better centered on atoms, and each spin-up WF map one-by-one to
-each spin-down WF.
+Notice the 2nd last column of ωc, which is the penalty for WF centers:
+in the case of independent Wannierizations, some WF centers are far away
+from atom positions, so we don't have a atom-centered Hamiltonian model.
+Moreover, as mentioned above, some spin overlaps are 0, so the spin up and
+down have different real-space basis functions.
+
+In comparison, the two constraints work properly: the resulting WFs
+are well-centered on atoms (all penalties < 4e-3), and each spin-up WF
+map one-by-one to each spin-down WF (all `<↑|↓>` > 0.98).
 
 Finally, we check the interpolated bands.
 =#
@@ -290,7 +321,11 @@ P = plot_band_diff(kpi, qe.E_dn, E_dn; fermi_energy=qe.fermi_energy)
 Main.HTMLPlot(P, 500)  # hide
 
 #=
-Finally, we have two sets of WFs that have similar centers and spreads,
+From the above two figures, we know that our WFs accurately reproduce the
+``CrI_3`` Hamiltonian.
+
+Finally, we have two sets of WFs that are atom-centered,
+have similar centers and spreads,
 and can accurately interpolate band structures!
-We can now pass them to magnetic exchange constants calculations.
+We can now pass them to magnetic exchange constant calculations.
 =#
