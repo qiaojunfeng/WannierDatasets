@@ -57,7 +57,7 @@ The [`disentangle`](@ref) function
 will disentangle and maximally localize the spread
 functional, and returns the gauge matrices `U`,
 =#
-U = disentangle(model)
+U = disentangle(model);
 
 # The initial spread is
 omega(model)
@@ -87,7 +87,7 @@ ef = 16.8985
 =#
 # Force using `kpoint_path` in `win` file
 win = read_win("cu.win")
-kpath = Wannier.KPath(win.unit_cell, win.kpoint_path)
+kpath = Wannier.get_kpath(win.unit_cell, win.kpoint_path)
 
 interp_model = Wannier.InterpModel(model; kpath=kpath)
 

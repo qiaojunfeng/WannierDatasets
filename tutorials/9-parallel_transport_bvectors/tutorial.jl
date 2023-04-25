@@ -161,7 +161,7 @@ ef = 4.6459
 
 # Force using `kpoint_path` in `win` file
 win = read_win("CuBr2.win")
-kpath = Wannier.KPath(win.unit_cell, win.kpoint_path)
+kpath = Wannier.get_kpath(win.unit_cell, win.kpoint_path)
 
 interp_model = Wannier.InterpModel(model; kpath=kpath)
 

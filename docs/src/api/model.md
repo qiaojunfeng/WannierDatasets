@@ -1,6 +1,6 @@
 # Model
 
-The [`Model`](@ref) is a Julia `struct` that abstracts a single Wannierization,
+The `Model` is a Julia `struct` that abstracts a single Wannierization,
 it contains all the necessary information for maximally localization of
 the crystal structure.
 

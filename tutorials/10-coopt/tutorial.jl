@@ -1,4 +1,4 @@
-# # 8. Co-optimizing spin-up and spin-down WFs
+# # 10. Co-optimizing spin-up and spin-down WFs
 
 #=
 ```@meta
@@ -18,7 +18,7 @@ WFs, with two constraints:
 1. center constraints to be atom-centered WFs
 2. spin-up and down overlap constraints to be as similar as possible
 
-We will Wannierize a 2D $CrI\_3$ system, using pseudo-atomic-orbital projections
+We will Wannierize a 2D ``CrI_3`` system, using pseudo-atomic-orbital projections
 as the starting guess (computed by QE).
 
 ## Outline
@@ -79,7 +79,7 @@ We will use the [`read_w90`](@ref) function to read the
 for spin-up and spin-down channels.
 Note the frozen windows for the two channels are set independently
 according to the `dis_froz_max` inside the `win` files;
-in our case, they are both `dis_froz_max = 1 eV` since there is a gap.
+in our case, they are both `dis_froz_max = -2 eV` since there is a gap.
 =#
 model_up = read_w90("up/cri3_up")
 model_dn = read_w90("dn/cri3_dn")
@@ -133,17 +133,17 @@ Previous band structures show that projection-only WFs are not good enough.
 Now, we will run disentanglement (and maximal localization) independently for
 the two spin channels, to construct WFs that can accurately interpolate
 band structures.
-Note we just run 400 iterations here, this only converge to the order of
-1e-3, but is already good enough for band interpolation.
+Note we just run 100 iterations here, this only converge to the order of
+5e-2, but is already good enough for band interpolation.
 =#
-U_up_mlwf = disentangle(model_up; max_iter=400);
+U_up_mlwf = disentangle(model_up);
 
 # and WF centers and spreads
 omega(model_up, U_up_mlwf)
 
-# For band interpolations, we explicitly construct `InterpModel`s by
-# reusing previous ``R`` vectors, and compute Hamiltonian ``H(R)``.
-# This skips ``R`` vector generation, a bit faster
+# For band interpolations, we explicitly construct [`InterpModel`](@ref)s by
+# reusing previous ``\bm{R}`` vectors, and compute Hamiltonian ``H(\bm{R})``.
+# This skips ``\bm{R}`` vector generation, a bit faster
 interpModel_up_mlwf = Wannier.InterpModel(
     interpModel_up.kRvectors,
     interpModel_up.kpath,
@@ -155,7 +155,7 @@ E_up_mlwf = Wannier.interpolate(interpModel_up_mlwf, kpi)
 plot_band_diff(kpi, qe.E_up, E_up_mlwf; fermi_energy=qe.fermi_energy)
 
 # similarly, for spin-down channel
-U_dn_mlwf = disentangle(model_dn; max_iter=400);
+U_dn_mlwf = disentangle(model_dn);
 # and WF centers and spreads
 omega(model_dn, U_dn_mlwf)
 # and the interpolated bands
@@ -190,7 +190,7 @@ using the previous two `Model`s and an additional overlap matrix.
 
 The spin-up and down overlap matrices is written in the same format as `amn`
 =#
-Mud = read_amn("updn/cri3_updn.mud")
+Mud = read_amn("updn/cri3_updn.mud");
 
 # then assemble into a [`MagModel`](@ref)
 model = Wannier.MagModel(model_up, model_dn, Mud)
@@ -240,6 +240,10 @@ Here the `λc` is the Lagrange multiplier for the WF center constraint,
 and `λs` is for the spin overlap constraint.
 
 We use `10.0` for both `λc` and `λs` here, but you can try different values.
+
+On output, the second last column, ωc, is the penalty of the WF center
+constraint, i.e., the larger the ωc, the farther the WF center is from the
+target position r₀.
 =#
 λc = 10.0
 λs = 10.0

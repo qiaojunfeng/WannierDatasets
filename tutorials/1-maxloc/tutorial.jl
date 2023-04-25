@@ -95,7 +95,7 @@ and run the QE calculations for `amn`, `mmn`, and `eig` files.
 ## Model generation
 
 We will use the [`read_w90`](@ref) function to read the
-`win`, `amn`, `mmn`, and `eig` files, and construct a [`Model`](@ref Model)
+`win`, `amn`, `mmn`, and `eig` files, and construct a [`Model`](@ref)
 that abstracts the calculation
 =#
 model = read_w90("si2")
@@ -106,7 +106,7 @@ model = read_w90("si2")
 Maximal localization can be easily done by calling the
 [`max_localize`](@ref) function, which returns the gauge matrices `U`,
 =#
-U = max_localize(model)
+U = max_localize(model);
 
 # The initial spread is
 omega(model)

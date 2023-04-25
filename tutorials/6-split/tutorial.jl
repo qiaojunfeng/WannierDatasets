@@ -91,7 +91,7 @@ Then we split the model into two, by diagonalizing the Wannier gauge Hamiltonian
 we need to pass it the number of valence bands, `n_val`,
 =#
 n_val = 4
-model_v, model_c, Uv, Uc = split_model(model, n_val)
+(model_v, Uv), (model_c, Uc) = split_model(model, n_val)
 #=
 Returned are two separated `Model`s, and the two corresponding gauge transformation
 matrices from the total manifold to the two separated submanifolds.

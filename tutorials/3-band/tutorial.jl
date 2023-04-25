@@ -169,7 +169,7 @@ i.e., written files are
 ### Visualization in the Julia world
 
 Instead of saving, you can also plot the band structure by
-calling the [`WannierPlots.plot_band`](@ref) function,
+calling the `WannierPlots.plot_band` function,
 
 !!! note
 
