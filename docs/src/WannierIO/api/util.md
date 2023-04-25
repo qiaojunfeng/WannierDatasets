@@ -21,15 +21,14 @@ Pages = ["util.md"]
 
 ## Fortran related
 
-```@docs
-isbinary
-parse_float
-parse_bool
+```@autodocs
+Modules = [WannierIO]
+Pages   = ["util/fortran.jl"]
 ```
 
 ## Lattice
 
-```@docs
-get_recip_lattice
-get_lattice
+```@autodocs
+Modules = [WannierIO]
+Pages   = ["util/lattice.jl"]
 ```

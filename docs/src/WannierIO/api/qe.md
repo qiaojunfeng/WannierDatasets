@@ -19,12 +19,10 @@ Pages = ["qe.md"]
 
 ## Read
 
-```@docs
-read_qe_band
-```
-
-## Misc
-
-```@docs
-guess_kpath
+```@autodocs
+Modules = [WannierIO]
+Pages   = [
+    "qe/band.jl",
+    "qe/xml.jl",
+]
 ```

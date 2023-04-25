@@ -17,16 +17,13 @@ Depth = 2
 Pages = ["volumetric.md"]
 ```
 
-## Read
+## Read/write
 
-```@docs
-read_xsf
-read_cube
-```
-
-## Write
-
-```@docs
-write_xsf
-write_cube
+```@autodocs
+Modules = [WannierIO]
+Pages   = [
+    "volume/xsf.jl",
+    "volume/bxsf.jl",
+    "volume/cube.jl",
+]
 ```
