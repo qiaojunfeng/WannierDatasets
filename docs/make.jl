@@ -96,7 +96,8 @@ makedocs(;
                 "API" => [
                     "Band" => "WannierPlots/api/band.md",
                     "Real space" => "WannierPlots/api/realspace.md",
-                    # "Fermi surface" => "api/fermisurf.md",
+                    "B vector" => "WannierPlots/api/bvector.md",
+                    "Fermi surface" => "WannierPlots/api/fermisurf.md",
                 ],
             ]
         ],

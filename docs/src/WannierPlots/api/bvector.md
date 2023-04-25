@@ -1,6 +1,4 @@
-# Band structure
-
-There are some functions for quick peeks of band structures.
+# B vectors
 
 ```@meta
 CurrentModule = WannierPlots
@@ -9,14 +7,14 @@ CurrentModule = WannierPlots
 ## Contents
 
 ```@contents
-Pages = ["band.md"]
+Pages = ["bvector.md"]
 Depth = 2
 ```
 
 ## Index
 
 ```@index
-Pages = ["band.md"]
+Pages = ["bvector.md"]
 ```
 
 ## API
@@ -24,7 +22,6 @@ Pages = ["band.md"]
 ```@autodocs
 Modules = [WannierPlots]
 Pages   = [
-    "band/band.jl",
-    "band/diff.jl",
+    "bvectors.jl",
 ]
 ```

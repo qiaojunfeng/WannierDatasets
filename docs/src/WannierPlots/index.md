@@ -6,3 +6,5 @@ A plotting extension for [`Wannier.jl`](https://wannierjl.org).
 
 - Band structure
 - Real space WFs
+- B vectors
+- Fermi surface

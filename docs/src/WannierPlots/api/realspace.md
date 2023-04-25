@@ -21,5 +21,10 @@ Pages = ["realspace.md"]
 
 ## API
 
-```@docs
+```@autodocs
+Modules = [WannierPlots]
+Pages   = [
+    "realspace/wf_makie.jl",
+    "realspace/wf_plotlyjs.jl",
+]
 ```

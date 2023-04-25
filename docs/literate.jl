@@ -80,3 +80,5 @@ for dir in ["3-band", "4-realspace", "8-fermi_surface"]
     dst = joinpath(PLOTS_EXAMPLES_BUILDDIR, dir)
     cp(src, dst; force=true)
 end
+
+println("* Literate.jl finished *\n")
