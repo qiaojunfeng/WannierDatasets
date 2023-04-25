@@ -22,22 +22,23 @@ Depth = 2
 Pages = ["realspace.md"]
 ```
 
-## Read/Write real space WFs
+## Real-space grid struct
 
-```@docs
-RGrid
-origin
-span_vectors
-read_realspace_wf
-write_realspace_wf
+```@autodocs
+Modules = [Wannier]
+Pages   = ["common/rgrid.jl"]
+```
+
+## Read/write real-space WFs
+
+```@autodocs
+Modules = [Wannier]
+Pages   = ["realspace/wavefunction.jl"]
 ```
 
 ## Evaluate operators in real space
 
-```@docs
-cartesianize_xyz
-moment
-center(rgrid::RGrid, W::AbstractArray)
-omega(rgrid::RGrid, W::AbstractArray)
-position_op(rgrid::RGrid, W::AbstractArray{T,4}) where {T<:Complex}
+```@autodocs
+Modules = [Wannier]
+Pages   = ["realspace/moment.jl"]
 ```

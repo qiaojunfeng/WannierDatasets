@@ -37,24 +37,9 @@ Depth = 2
 Pages = ["bvector.md"]
 ```
 
-## B vector shells
+## B vector shells and B vectors
 
-```@docs
-BVectorShells
-search_shells
-are_parallel
-delete_parallel
-compute_weights
-check_b1
-flatten_shells
-```
-
-## B vectors
-
-```@docs
-BVectors
-sort_supercell
-sort_bvectors
-get_bvectors
-index_bvector
+```@autodocs
+Modules = [Wannier]
+Pages   = ["bvector.jl"]
 ```

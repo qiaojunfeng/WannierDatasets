@@ -1,7 +1,8 @@
 # Model
 
-The [`Model`](@ref Model) `struct` abstracts a single Wannierization, it contains all the necessary
-information for maximally localization of the crystal structure.
+The [`Model`](@ref) is a Julia `struct` that abstracts a single Wannierization,
+it contains all the necessary information for maximally localization of
+the crystal structure.
 
 ```@meta
 CurrentModule = Wannier
@@ -20,28 +21,16 @@ Depth = 2
 Pages = ["model.md"]
 ```
 
-## Model struct
+## Model
 
-```@docs
-Model
-Model(lattice::Mat3{T}, atom_positions::Matrix{T}, atom_labels::Vector{String}, kgrid::Vec3{Int}, kpoints::Matrix{T}, bvectors::BVectors{T}, frozen_bands::AbstractMatrix{Bool}, M::Array{Complex{T}, 4}, U::Array{Complex{T}, 3}, E::Matrix{T}) where {T<:Real}
-```
-
-## Model functions
-
-```@docs
-rotate_gauge(model::Model, U::Array{T,3}) where {T<:Number}
-truncate(model::Model, keep_bands::AbstractVector{Int})
+```@autodocs
+Modules = [Wannier]
+Pages   = ["model.jl"]
 ```
 
 ## Spread
 
-```@docs
-Spread
-omega
-omega_grad
-omega_local
-center
-position_op
-berry_connection
+```@autodocs
+Modules = [Wannier]
+Pages   = ["spread.jl"]
 ```

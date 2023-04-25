@@ -13,8 +13,9 @@ wrap the corresponding functions in `WannierIO.jl`, to utilize the
 
 !!! tip
 
-    In most cases, the units of the function arguments and returns are in angstrom unit for lattice,
-    and fractional w.r.t lattice for atomic positions, etc.
+    In most cases, the units of the function arguments and returns are in
+    angstrom unit for lattice, and fractional w.r.t lattice for
+    atomic positions, etc.
 
 !!! tip
 
@@ -50,17 +51,16 @@ Pages = ["io.md"]
 
 ## Wannier90 files
 
-```@docs
-read_orthonorm_amn
-read_w90_band
-write_w90_band
-write_chk
-read_w90
-read_w90_interp
-write_w90
-read_nnkp
-write_nnkp
-read_w90_tb
+```@autodocs
+Modules = [Wannier]
+Pages   = [
+    "io/w90/amn.jl",
+    "io/w90/band.jl",
+    "io/w90/chk.jl",
+    "io/w90/model.jl",
+    "io/w90/nnkp.jl",
+    "io/w90/tb.jl",
+]
 ```
 
 ## File manipulation
@@ -72,25 +72,27 @@ read_w90_tb
     Here are some functions to remove some bands from `mmn`, `eig`, or `UNK` files,
     so as to skip rerunning NSCF calculations and `pw2wannier90.x`.
 
-```@docs
-truncate_mmn_eig
-truncate_unk
-truncate_w90
+```@autodocs
+Modules = [Wannier]
+Pages   = ["io/truncate.jl"]
 ```
 
 ## 3D visualization files
 
-```@docs
-read_xsf
-write_xsf
-read_cube
-write_cube
+```@autodocs
+Modules = [Wannier]
+Pages   = [
+    "io/volume/xsf.jl",
+    "io/volume/bxsf.jl",
+    "io/volume/cube.jl",
+]
 ```
 
-## Misc
+## Interface to DFT codes
 
-```@docs
-KPathInterpolant
-get_symm_idx_label
-Model(chk::WannierIO.Chk)
+```@autodocs
+Modules = [Wannier]
+Pages   = [
+    "io/interface/mud.jl",
+]
 ```

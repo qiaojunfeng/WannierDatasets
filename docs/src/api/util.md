@@ -1,6 +1,6 @@
 # Utility
 
-These are some simple convenience functions for development.
+These are some simple convenience functions to smoothen developer experience.
 
 ```@meta
 CurrentModule = Wannier
@@ -19,62 +19,41 @@ Depth = 2
 Pages = ["util.md"]
 ```
 
-## Atomic properties
+## Structure
 
-```@docs
-get_atom_number
-```
-
-## Lattice
-
-```@docs
-get_recip_lattice
-get_lattice
+```@autodocs
+Modules = [Wannier]
+Pages   = ["util/structure.jl"]
 ```
 
 ## Matrices
 
-```@docs
-imaglog
-orthonorm_lowdin
-fix_global_phase
-compute_imre_ratio
-rotate_gauge(O::Array{T,3}, U::Array{T,3}) where {T<:Number}
-eyes_U
-rotate_U
-rotate_M
-isunitary
-get_projectability
-findvector
-rand_unitary
+```@autodocs
+Modules = [Wannier]
+Pages   = ["util/linalg.jl"]
 ```
 
-## Kpoints
+## Kpoint
 
-```@docs
-get_kpoint_mappings
-make_supercell
-get_kpoints(kgrid::AbstractVector{Int}; fractional::Bool=true)
-sort_kpoints
-get_kgrid
+```@autodocs
+Modules = [Wannier]
+Pages   = ["util/kpoint.jl"]
 ```
 
-## KPath
+## Kpath
 
-The `KPath` and `KPathInterpolant` are defined in `Brillouin.jl`,
+The `KPath` and `KPathInterpolant` are defined in
+[`Brillouin.jl`](https://thchr.github.io/Brillouin.jl/stable/),
 they are used to store the high-symmetry kpoints and their labels.
 
-```@docs
-interpolate_w90
-get_x
-get_kpoints(kpi::KPathInterpolant)
-get_kpath
+```@autodocs
+Modules = [Wannier]
+Pages   = ["util/kpath.jl"]
 ```
 
 ## Centers
 
-```@docs
-find_nearests
-find_nearest_atom
-wrap_centers
+```@autodocs
+Modules = [Wannier]
+Pages   = ["util/center.jl"]
 ```

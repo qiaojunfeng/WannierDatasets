@@ -15,13 +15,17 @@ Pages = ["cli.md"]
 
 ## Commands
 
-```@docs
-maxloc
-dis
-ptg
-optrot
-splitvc
-trunc
-band
-fermisurf
+```@autodocs
+Modules = [Wannier]
+Pages   = [
+    "cli/main.jl",
+    "cli/max_localize.jl",
+    "cli/disentangle.jl",
+    "cli/parallel_transport.jl",
+    "cli/split_wannierize.jl",
+    "cli/opt_rotate.jl",
+    "cli/truncate.jl",
+    "cli/band.jl",
+    "cli/fermisurf.jl",
+]
 ```
