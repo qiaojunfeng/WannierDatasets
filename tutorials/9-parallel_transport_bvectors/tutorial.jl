@@ -172,10 +172,11 @@ E = Wannier.interpolate(interp_model, kpi)
 
 # plot band difference
 fig = plot_band_diff(kpi, E_qe, E; fermi_energy=ef)
-fig.plot.layout.width = 1000
-fig.plot.layout.height = 1000
+fig.plot.layout.width = 500
+fig.plot.layout.height = 500
 fig.plot.layout.autosize = false
 fig
+Main.HTMLPlot(fig, 500)  # hide
 
 #=
 That's all!

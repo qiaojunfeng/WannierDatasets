@@ -27,7 +27,8 @@ PWD = "8-fermi_surface"
 bxsf = Wannier.read_bxsf("$PWD/cu.bxsf")
 
 fig = WannierPlots.plot_fermisurf_plotly(bxsf.rgrid, bxsf.fermi_energy, bxsf.E)
-fig.layout.width = 1000
-fig.layout.height = 1000
+fig.layout.width = 500
+fig.layout.height = 500
 fig.layout.autosize = false
 fig
+Main.HTMLPlot(fig, 500)  # hide

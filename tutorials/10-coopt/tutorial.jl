@@ -69,7 +69,8 @@ kpoint coordinates to be interpolated, using 100 points in the 1st kpath segment
 kpi = Wannier.interpolate_w90(kpath, 100)
 
 # Now we can plot the QE bands for two spin channels
-plot_band_diff(kpi, qe.E_up, qe.E_dn; fermi_energy=qe.fermi_energy)
+P = plot_band_diff(kpi, qe.E_up, qe.E_dn; fermi_energy=qe.fermi_energy)
+Main.HTMLPlot(P, 500)  # hide
 
 #=
 ## Model generation
@@ -117,14 +118,17 @@ E_up_projonly = Wannier.interpolate(interpModel_up, kpi)
 E_dn_projonly = Wannier.interpolate(interpModel_dn, kpi)
 
 # and plot the spin-up bands compared with QE
-plot_band_diff(kpi, qe.E_up, E_up_projonly; fermi_energy=qe.fermi_energy)
+P = plot_band_diff(kpi, qe.E_up, E_up_projonly; fermi_energy=qe.fermi_energy)
+Main.HTMLPlot(P, 500)  # hide
 
 # and the spin-down bands
-plot_band_diff(kpi, qe.E_dn, E_dn_projonly; fermi_energy=qe.fermi_energy)
+P = plot_band_diff(kpi, qe.E_dn, E_dn_projonly; fermi_energy=qe.fermi_energy)
+Main.HTMLPlot(P, 500)  # hide
 
 # and this shows the spin-up and spin-down bands from Wannier interpolation
 # in one figure
-plot_band_diff(kpi, E_up_projonly, E_dn_projonly; fermi_energy=qe.fermi_energy)
+P = plot_band_diff(kpi, E_up_projonly, E_dn_projonly; fermi_energy=qe.fermi_energy)
+Main.HTMLPlot(P, 500)  # hide
 
 #=
 ## Independent Wannierizations of two spin channels
@@ -152,7 +156,8 @@ interpModel_up_mlwf = Wannier.InterpModel(
 E_up_mlwf = Wannier.interpolate(interpModel_up_mlwf, kpi)
 
 # Now the MLWF bands are very accurate, much better than projection-only
-plot_band_diff(kpi, qe.E_up, E_up_mlwf; fermi_energy=qe.fermi_energy)
+P = plot_band_diff(kpi, qe.E_up, E_up_mlwf; fermi_energy=qe.fermi_energy)
+Main.HTMLPlot(P, 500)  # hide
 
 # similarly, for spin-down channel
 U_dn_mlwf = disentangle(model_dn);
@@ -165,7 +170,8 @@ interpModel_dn_mlwf = Wannier.InterpModel(
     fourier(interpModel_dn.kRvectors, Wannier.get_Hk(model_dn.E, U_dn_mlwf)),
 )
 E_dn_mlwf = Wannier.interpolate(interpModel_dn_mlwf, kpi)
-plot_band_diff(kpi, qe.E_dn, E_dn_mlwf; fermi_energy=qe.fermi_energy)
+P = plot_band_diff(kpi, qe.E_dn, E_dn_mlwf; fermi_energy=qe.fermi_energy)
+Main.HTMLPlot(P, 500)  # hide
 
 #=
 Although the two sets of MLWFs accurately reproduce the band structures,
@@ -276,9 +282,12 @@ E_up = Wannier.interpolate(interpModel_up, kpi);
 E_dn = Wannier.interpolate(interpModel_dn, kpi);
 
 # and compare the up bands against QE
-plot_band_diff(kpi, qe.E_up, E_up; fermi_energy=qe.fermi_energy)
+P = plot_band_diff(kpi, qe.E_up, E_up; fermi_energy=qe.fermi_energy)
+Main.HTMLPlot(P, 500)  # hide
+
 # and the down bands
-plot_band_diff(kpi, qe.E_dn, E_dn; fermi_energy=qe.fermi_energy)
+P = plot_band_diff(kpi, qe.E_dn, E_dn; fermi_energy=qe.fermi_energy)
+Main.HTMLPlot(P, 500)  # hide
 
 #=
 Finally, we have two sets of WFs that have similar centers and spreads,
