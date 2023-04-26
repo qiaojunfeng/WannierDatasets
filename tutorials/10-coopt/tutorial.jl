@@ -140,6 +140,25 @@ P = plot_band_diff(kpi, E_up_projonly, E_dn_projonly; fermi_energy=qe.fermi_ener
 Main.HTMLPlot(P, 500)  # hide
 
 #=
+Save the MLWF gauge into `chk` files, to allow other codes, e.g., Wannier90,
+to restart from the generated gauge.
+Note we need to explicitly provide the `exclude_bands`, so as to be consistent
+with `win` file.
+
+!!! note
+
+    The written `chk` are Fortran formatted files, which you can convert to
+    binary file using Wannier90 `chk2chk.x` executable.
+    There is an additional keyword argument `binary` for [`write_chk`](@ref),
+    which is `false` by default, but can be set to `true` to write binary `chk`;
+    however, Fortran binary format is compiler-dependent, so it's not gaurantted
+    to be able to restart from the written binary `chk` file for other codes.
+=#
+exclude_bands = collect(1:8)
+Wannier.write_chk("up/wjl_up_projonly.chk", model_up; exclude_bands)
+Wannier.write_chk("dn/wjl_dn_projonly.chk", model_dn; exclude_bands)
+
+#=
 ## Independent Wannierizations of two spin channels
 
 Previous band structures show that projection-only WFs are not good enough.
@@ -182,6 +201,10 @@ E_dn_mlwf = Wannier.interpolate(interpModel_dn_mlwf, kpi)
 P = plot_band_diff(kpi, qe.E_dn, E_dn_mlwf; fermi_energy=qe.fermi_energy)
 Main.HTMLPlot(P, 500)  # hide
 
+# Save the gauge into `chk` files
+Wannier.write_chk("up/wjl_up_mlwf.chk", model_up, U_up_mlwf; exclude_bands)
+Wannier.write_chk("dn/wjl_dn_mlwf.chk", model_dn, U_dn_mlwf; exclude_bands)
+
 #=
 Although the two sets of MLWFs accurately reproduce the band structures,
 their centers and spreads are often different: in simple cases,
@@ -223,6 +246,10 @@ omega(model, U_up, U_dn, λs)
 
 # as a comparison, the spreads of independent Wannierizations are
 omega(model, U_up_mlwf, U_dn_mlwf, λs)
+
+# Save the gauge into `chk` files
+Wannier.write_chk("up/wjl_up_cowf.chk", model_up, U_up; exclude_bands)
+Wannier.write_chk("dn/wjl_dn_cowf.chk", model_dn, U_dn; exclude_bands)
 
 #=
 As can be seen from the above spin-up-down overlaps `<↑|↓>`,
@@ -319,6 +346,10 @@ Main.HTMLPlot(P, 500)  # hide
 # and the down bands
 P = plot_band_diff(kpi, qe.E_dn, E_dn; fermi_energy=qe.fermi_energy)
 Main.HTMLPlot(P, 500)  # hide
+
+# Save the gauge into `chk` files
+Wannier.write_chk("up/wjl_up_cowf_c.chk", model_up, U_up; exclude_bands)
+Wannier.write_chk("dn/wjl_dn_cowf_c.chk", model_dn, U_dn; exclude_bands)
 
 #=
 From the above two figures, we know that our WFs accurately reproduce the
