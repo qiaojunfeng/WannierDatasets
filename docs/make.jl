@@ -108,6 +108,7 @@ makedocs(;
         "Theory" => [
             "Algorithm" => "theory/algorithm.md",
             "Normalization" => "theory/normalization.md",
+            "Initial projection" => "theory/initial_projection.md",
         ],
         "API" => [
             "Utility" => "api/util.md",
