@@ -1,5 +1,6 @@
-# Process tutorials by Literate.jl
 using Literate
+
+# Process tutorials by Literate.jl
 
 for dir in readdir(TUTORIALS_SRCDIR)
     # skip folders starting with underscore
@@ -51,7 +52,6 @@ end
 
 
 # process the WannierPlots examples
-const PLOTS_EXAMPLES_SRCDIR = joinpath(@__DIR__, "src/WannierPlots/examples")
 
 for jl in readdir(PLOTS_EXAMPLES_SRCDIR)
     # only process jl scripts
@@ -72,7 +72,8 @@ end
 
 # Copy the input files to the build folder, so that Documenter.jl can correctly
 # execute the markdown files.
-const PLOTS_EXAMPLES_BUILDDIR = joinpath(@__DIR__, "build/WannierPlots/examples")
+
+# since the whole build dir is deleted, I need to create it again
 mkpath(PLOTS_EXAMPLES_BUILDDIR)
 
 for dir in ["3-band", "4-realspace", "8-fermi_surface"]
