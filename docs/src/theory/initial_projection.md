@@ -16,11 +16,11 @@ A_{m n \mathbf{k}} = \langle \psi_{m \mathbf{k}} | \phi_{n \mathbf{k}} \rangle.
 The Bloch wavefunction is expanded in plane waves,
 
 ```math
-\psi_{m \mathbf{k}}(\mathbf{r}) = \frac{1}{\sqrt{\Omega}} \sum_{\mathbf{G}}
+\psi_{m \mathbf{k}}(\mathbf{r}) = \frac{1}{\sqrt{V}} \sum_{\mathbf{G}}
   c_{m \mathbf{k}}(\mathbf{G}) e^{i (\mathbf{k} + \mathbf{G}) \mathbf{r}},
 ```
 
-where ``\Omega`` is the volume of the unit cell, the sum is over the
+where ``V`` is the volume of the unit cell, the sum is over the
 plane-wave expansions (integer multiples of reciprocal lattice vectors)
 ``\mathbf{G}``, which are limited by the energy cutoff ``E_{\mathrm{cut}}``,
 
