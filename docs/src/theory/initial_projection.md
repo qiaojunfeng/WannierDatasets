@@ -105,6 +105,12 @@ harmonics,
 the ``i^l`` in the expression of ``e^{i \mathbf{q} \cdot \mathbf{r}}``
 becomes ``(-i)^l`` in that of ``e^{-i \mathbf{q} \cdot \mathbf{r}}``.
 
+!!! note
+
+    To really convince you that there should be a minus signe, I created a
+    notebook which includes some numerical tests,
+    [click here to download](./pluto_fourier.html).
+
 Now, using the orthogonality of spherical harmonics,
 
 ```math
