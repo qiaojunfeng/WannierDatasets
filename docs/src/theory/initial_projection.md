@@ -107,7 +107,7 @@ becomes ``(-i)^l`` in that of ``e^{-i \mathbf{q} \cdot \mathbf{r}}``.
 
 !!! note
 
-    To really convince you that there should be a minus signe, I created a
+    To really convince you that there should be a minus sign, I created a
     notebook which includes some numerical tests,
     [click here to download](./pluto_fourier.html).
 
