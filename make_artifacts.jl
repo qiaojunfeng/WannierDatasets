@@ -7,28 +7,31 @@
 #
 using Tar, Inflate, SHA, TOML
 
-ENV["GZIP"] = -9
-
 artifacts = Dict()
 
-const examples_dir = joinpath(@__DIR__, "examples")
+const datasets_dir = joinpath(@__DIR__, "datasets")
 const artifacts_dir = joinpath(@__DIR__, "artifacts")
+# exclude the creator folder which contains the inputs for generating the datasets
+const tar_excludes = ["creator"]
 
-for example in readdir(examples_dir)
-    fullpath = joinpath(examples_dir, example)
+for data in readdir(datasets_dir)
+    fullpath = joinpath(datasets_dir, data)
     isdir(fullpath) || continue
 
-    outpath = joinpath(artifacts_dir, "$(example).tar.gz")
+    outpath = joinpath(artifacts_dir, "$(data).tar.gz")
     cd(fullpath) do
-        run(`tar --use-compress-program="pigz -k" -cvzf $outpath $(readdir())`)
+        # -9: use highest compression level
+        files = readdir()
+        filter!(x -> !(x in tar_excludes), files)
+        run(`tar --use-compress-program="pigz -9 -k" -cvf $outpath $files`)
     end
 
-    artifact_name = example
+    artifact_name = data
     artifacts[artifact_name] = Dict(
         "git-tree-sha1" => Tar.tree_hash(IOBuffer(inflate_gzip(outpath))),
         "lazy" => true,
         "download" => [Dict(
-            "url" => "https://github.com/qiaojunfeng/WannierDatasets/raw/main/artifacts/$(example).tar.gz",
+            "url" => "https://github.com/qiaojunfeng/WannierDatasets/raw/main/artifacts/$(data).tar.gz",
             "sha256" => bytes2hex(open(sha256, outpath))
         )]
     )

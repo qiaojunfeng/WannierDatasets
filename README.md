@@ -1,4 +1,4 @@
-# WannierDatasets.jl
+# WannierDatasets
 
 Datasets for playing with Wannier functions.
 
@@ -24,7 +24,7 @@ to manage the datasets. This allows us to
 ## Structure of the repo
 
 - [`pseudo/`](./pseudo/) pseudopotentials used when generating the datasets
-
+- [`src/`](./src/) a fake folder just to make `Project.toml` happy
 - [`util/`](./util/) Several small scripts that help with running the examples
 
 ## Contributing

@@ -1,0 +1,7 @@
+[Si2]
+git-tree-sha1 = "9a6a17bbcfecaebe668b04f7d3f36e2f93675c75"
+lazy = true
+
+    [[Si2.download]]
+    sha256 = "a7108519d7e19afb11110981c75680b9393a5be97600d5358c2af1a6d7419e3d"
+    url = "https://github.com/qiaojunfeng/WannierDatasets/raw/main/artifacts/Si2.tar.gz"

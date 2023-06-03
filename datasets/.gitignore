@@ -5,17 +5,18 @@
 # QE outputs
 out/
 *.out
-UNK*
 bands.dat
 *.projwfc_up
 *.pdos_atm#*
 *.pdos_tot
 
 # W90 inputs
-*.amn
-*.mmn
-*.eig
-*.spn
+# I should git add these files
+# *.amn
+# *.mmn
+# *.eig
+# *.spn
+# UNK*
 
 # W90 outputs
 *.nnkp
