@@ -5,6 +5,9 @@
 #   using Pkg; Pkg.instantiate()
 # to install the dependencies.
 #
+# Artifacts docs:
+# https://pkgdocs.julialang.org/v1/artifacts/
+#
 using Tar, Inflate, SHA, TOML
 
 artifacts = Dict()
@@ -18,11 +21,13 @@ for data in readdir(datasets_dir)
     fullpath = joinpath(datasets_dir, data)
     isdir(fullpath) || continue
 
-    outpath = joinpath(artifacts_dir, "$(data).tar.gz")
+    tar_name = "$(data).tar.gz"
+    outpath = joinpath(artifacts_dir, tar_name)
     cd(fullpath) do
-        # -9: use highest compression level
         files = readdir()
         filter!(x -> !(x in tar_excludes), files)
+        # -9: use highest compression level
+        # -k: keep original files
         run(`tar --use-compress-program="pigz -9 -k" -cvf $outpath $files`)
     end
 
@@ -31,7 +36,9 @@ for data in readdir(datasets_dir)
         "git-tree-sha1" => Tar.tree_hash(IOBuffer(inflate_gzip(outpath))),
         "lazy" => true,
         "download" => [Dict(
-            "url" => "https://github.com/qiaojunfeng/WannierDatasets/raw/main/artifacts/$(data).tar.gz",
+            # "url" => "https://github.com/qiaojunfeng/WannierDatasets/raw/main/artifacts/$(tar_name)",
+            # if you want to test locally,
+            "url" => outpath,
             "sha256" => bytes2hex(open(sha256, outpath))
         )]
     )
