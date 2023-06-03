@@ -1,3 +1,7 @@
-# force add chk & nnkp, for WannierIO tests
+# force add chk & nnkp, for WannierIO.jl tests
 !*.chk
+!*.chk.fmt
 !*.nnkp
+
+# force add w90 bands, for Wannier.jl examples
+!si2_band.*
