@@ -15,7 +15,23 @@ artifacts = Dict()
 const datasets_dir = joinpath(@__DIR__, "datasets")
 const artifacts_dir = joinpath(@__DIR__, "artifacts")
 # exclude the creator folder which contains the inputs for generating the datasets
-const tar_excludes = ["creator"]
+const tar_excludes = ["creator", ".gitignore", "README.md"]
+
+# gzip compression level, highest
+const GZIP = "-9"
+# By default, use gzip
+compress_prog = "gzip $GZIP"
+# Try to use pigz for parallel compression.
+# However, it is not available in github workflow (ubuntu-latest)
+try
+    run(`which pigz`)
+    # -k: keep original files
+    global compress_prog = "pigz $GZIP -k"
+catch
+    # pigz is not available
+end
+
+mkpath(artifacts_dir)
 
 for data in readdir(datasets_dir)
     fullpath = joinpath(datasets_dir, data)
@@ -26,9 +42,7 @@ for data in readdir(datasets_dir)
     cd(fullpath) do
         files = readdir()
         filter!(x -> !(x in tar_excludes), files)
-        # -9: use highest compression level
-        # -k: keep original files
-        run(`tar --use-compress-program="pigz -9 -k" -cvf $outpath $files`)
+        run(`tar --use-compress-program="$compress_prog" -cvf $outpath $files`)
     end
 
     artifact_name = data
@@ -36,9 +50,13 @@ for data in readdir(datasets_dir)
         "git-tree-sha1" => Tar.tree_hash(IOBuffer(inflate_gzip(outpath))),
         "lazy" => true,
         "download" => [Dict(
-            # "url" => "https://github.com/qiaojunfeng/WannierDatasets/raw/main/artifacts/$(tar_name)",
-            # if you want to test locally,
-            "url" => outpath,
+            # Use github release to host the artifacts
+            # https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
+            # 2GB limit per file, no limit on total size, no bandwidth limit
+            # https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
+            "url" => "https://github.com/qiaojunfeng/WannierDatasets/releases/latest/download/$(tar_name)",
+            # Or if you want to test locally
+            "url" => "file://$(outpath)",
             "sha256" => bytes2hex(open(sha256, outpath))
         )]
     )

@@ -3,53 +3,53 @@ git-tree-sha1 = "fc5b9a770e52057dbadc117b2f905b1b73d4b12c"
 lazy = true
 
     [[Cu.download]]
-    sha256 = "b5ce69e249225e7cade71ac960383089d042751d6046406187934102e93d3d4f"
-    url = "/home/jqiao/git/WannierDatasets/artifacts/Cu.tar.gz"
+    sha256 = "0766f385e3a70124fe514ab98adad9eb019dbf539a1ae1e4004698ce4f528fc9"
+    url = "file:///home/jqiao/git/WannierDatasets/artifacts/Cu.tar.gz"
 
 [CuBr2]
 git-tree-sha1 = "66162c21d4f2cde0b53db770aa8a96981c86a862"
 lazy = true
 
     [[CuBr2.download]]
-    sha256 = "ef2ebe582d193a1a6aab7bce38761bdf93b664f8608ba9d401a6e20fa4f149a1"
-    url = "/home/jqiao/git/WannierDatasets/artifacts/CuBr2.tar.gz"
+    sha256 = "a9093c90164c9437ea4be4e014515e0ffe987cfb1b9c1b2d915f3201902cb383"
+    url = "file:///home/jqiao/git/WannierDatasets/artifacts/CuBr2.tar.gz"
 
 [Si2_valence]
-git-tree-sha1 = "b5a401af206bee12fdafb6b5e0ca0125c39f3103"
+git-tree-sha1 = "402c129f84e9797f10ac3db46577596b7e17896f"
 lazy = true
 
     [[Si2_valence.download]]
-    sha256 = "43f58ddd16d53def0a6dac604f07d48bbde8356a820dfe970364a1f67fd80464"
-    url = "/home/jqiao/git/WannierDatasets/artifacts/Si2_valence.tar.gz"
+    sha256 = "b4823152969f9f131aeb8f55c279baa313fee8ce11cba61504f67d5f09b41d28"
+    url = "file:///home/jqiao/git/WannierDatasets/artifacts/Si2_valence.tar.gz"
 
 [CrI3]
 git-tree-sha1 = "0ae9dc95b7b126180f2295756aa7eabbb5b40c6b"
 lazy = true
 
     [[CrI3.download]]
-    sha256 = "6b0bc44e4d0c45efdf9cdd326943e182c9b2d4624530482e6739ca2c8847532f"
-    url = "/home/jqiao/git/WannierDatasets/artifacts/CrI3.tar.gz"
+    sha256 = "2d4cfddfd0552f1c372123e2ce3674ad7be3b3bc5a0ab81614e0ea5590b01230"
+    url = "file:///home/jqiao/git/WannierDatasets/artifacts/CrI3.tar.gz"
 
 [Si2]
-git-tree-sha1 = "b703e628d76f5fd22d8d74431589d6d97fc24432"
+git-tree-sha1 = "1a47148f3156c8659645c70bbcfc299b5c0dffea"
 lazy = true
 
     [[Si2.download]]
-    sha256 = "ab9db2e11c06dc3e6a019e65a9c3f9dfffa4d34f39c6a33ea589b7221f8b19bd"
-    url = "/home/jqiao/git/WannierDatasets/artifacts/Si2.tar.gz"
+    sha256 = "1f61a59f517f2ad44029eb5766420dee8678ae44da18d63f91ec6d9058fd49bd"
+    url = "file:///home/jqiao/git/WannierDatasets/artifacts/Si2.tar.gz"
 
 [MoS2]
 git-tree-sha1 = "bbe4d9e4cf9c0002eaa9feb5a1bbaeace1f40a98"
 lazy = true
 
     [[MoS2.download]]
-    sha256 = "e75feac17277c9b7d51d63ef9e89e0f50bd0d3b963e7fe73daa1925ed5cde184"
-    url = "/home/jqiao/git/WannierDatasets/artifacts/MoS2.tar.gz"
+    sha256 = "175ea7573556b41e1fe696cf4bf81f255fc3d445a488dbae578bd900273034f5"
+    url = "file:///home/jqiao/git/WannierDatasets/artifacts/MoS2.tar.gz"
 
 [graphene]
 git-tree-sha1 = "c7f47a74a65a205e6c3ea604ec3007a1a9d92a54"
 lazy = true
 
     [[graphene.download]]
-    sha256 = "40a733ab2821772a6325e327a39a88b1a801fce5df5dec86a90e370d08f22e5e"
-    url = "/home/jqiao/git/WannierDatasets/artifacts/graphene.tar.gz"
+    sha256 = "f6958a3e101584800e7fe91e993ac929d2069b3847b2b9f25bef2862a9afbb45"
+    url = "file:///home/jqiao/git/WannierDatasets/artifacts/graphene.tar.gz"
