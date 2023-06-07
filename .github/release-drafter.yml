@@ -1,0 +1,71 @@
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+template: |
+  # What's Changed
+
+  $CHANGES
+
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+
+categories:
+  - title: "Breaking"
+    label: "breaking"
+  - title: "🚀 Features"
+    label: "feature"
+  - title: "🐛 Bug Fixes"
+    label: "bug"
+  - title: "🧰 Maintenance"
+    label: "chore"
+  - title: "Documentation"
+    label: "docs"
+  - title: "Other changes"
+  - title: "Dependency Updates"
+    label: "dependency"
+    collapse-after: 5
+
+version-resolver:
+  major:
+    labels:
+      - breaking
+  minor:
+    labels:
+      - feature
+  patch:
+    labels:
+      - bug
+      - docs
+      - chore
+      - dependency
+  default: patch
+
+# I switched to Probot Auto Labeler, so that I can run it on all PRs,
+# so PRs are more likely to be labeled.
+# autolabeler:
+#   - label: 'docs'
+#     files:
+#       - 'docs\/'
+#       - '*.md'
+#     branch:
+#       - '/docs{0,1}\/.+/'
+#   - label: 'chore'
+#     files:
+#       - '.github\/'
+#     branch:
+#       - '/chore\/.+/'
+#   - label: 'bug'
+#     branch:
+#       - '/fix\/.+/'
+#     title:
+#       - '/fix/i'
+#   - label: 'feature'
+#     branch:
+#       - '/feature\/.+/'
+#     # body:
+#     #   - '/JIRA-[0-9]{1,4}/'
+
+exclude-labels:
+  - skip-changelog
+
+exclude-contributors:
+  - qiaojunfeng
+  - Junfeng Qiao

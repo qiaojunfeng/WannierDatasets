@@ -1,0 +1,31 @@
+# This workflow tests make_artifacts.jl for PRs.
+name: Test artifacts
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+    paths:
+      - make_artifacts.jl
+      - datasets/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v1
+
+      - name: Instantiate dependencies
+        run: julia --project -e 'using Pkg; Pkg.instantiate()'
+
+      - name: Build artifact tarballs
+        run: julia --project make_artifacts.jl
+
+      - name: Test artifacts
+        run: ls -l artifacts/*.tar.gz

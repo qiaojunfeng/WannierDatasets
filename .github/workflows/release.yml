@@ -1,0 +1,93 @@
+# This workflow is triggered when a PR for bump version is opened.
+name: Draft release
+
+# Triggered manually
+# on: workflow_dispatch
+# Triggered by PRs
+on:
+  # `pull_request_target` (instead of `pull_request`) is required for autolabeler
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+    paths:
+      - Project.toml
+
+permissions:
+  # write permission is required to create a github release
+  contents: write
+  # write permission is required for autolabeler
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Checkout out pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr checkout ${{ github.event.pull_request.number }}
+
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v1
+
+      - name: Instantiate dependencies
+        run: julia --project -e 'using Pkg; Pkg.instantiate()'
+
+      - name: Build artifact tarballs
+        run: julia --project make_artifacts.jl
+
+      - name: Test artifacts
+        run: ls -l artifacts/*.tar.gz
+
+      - name: Git commit Artifacts.toml
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          # Commit message for the created commit.
+          commit_message: "ci: build artifacts and update toml"
+
+          # Glob pattern of files which should be added to the commit
+          # Defaults to all (.)
+          file_pattern: Artifacts.toml
+          # Prevents the shell from expanding filenames.
+          disable_globbing: true
+
+          # Tag name being created in the local repository and
+          # pushed to remote repository and defined branch.
+          # tagging_message: 'v1.0.0'
+
+      - name: Update release draft
+        id: release-drafter
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Unfortunately, `https://github.com/actions/upload-release-asset`
+      # is not maintained anymore, so I use this
+      - name: Upload artifact tarballs
+        uses: shogo82148/actions-upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.release-drafter.outputs.upload_url }}
+          overwrite: true
+          asset_path: |
+            artifacts/*.tar.gz
+
+      - name: Generate PR message
+        id: get-version
+        run: |
+          version=$(.github/get_version.sh)
+          .github/generate_pr_msg.sh \
+            ${{ steps.release-drafter.outputs.html_url}} \
+            ${{ steps.release-drafter.outputs.tag_name }} \
+            "$version"
+
+      - name: Add PR Comment
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-path: |
+            pr_msg.txt

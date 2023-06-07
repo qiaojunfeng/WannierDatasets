@@ -56,7 +56,7 @@ for data in readdir(datasets_dir)
             # https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
             "url" => "https://github.com/qiaojunfeng/WannierDatasets/releases/latest/download/$(tar_name)",
             # Or if you want to test locally
-            "url" => "file://$(outpath)",
+            # "url" => "file://$(outpath)",
             "sha256" => bytes2hex(open(sha256, outpath))
         )]
     )
