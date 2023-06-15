@@ -2,3 +2,5 @@
 !*.chk
 !*.chk.fmt
 !*.nnkp
+
+!*.cube
