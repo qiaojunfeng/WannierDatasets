@@ -1,6 +1,8 @@
-# force add chk & nnkp, for WannierIO tests
+# force add chk & nnkp, for WannierIO.jl tests
 !*.chk
 !*.chk.fmt
 !*.nnkp
-
+!*.xsf
 !*.cube
+!*.wout
+!*_band.*
