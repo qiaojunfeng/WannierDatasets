@@ -1,17 +1,29 @@
-bands_plot = .true.
+# restart = plot
+
+num_bands = 4
+num_wann = 4
+mp_grid = 6 6 6
+
 conv_tol =   2.0000000000d-10
 conv_window = 3
-fermi_energy =   6.5589
-mp_grid = 6 6 6
-num_bands = 4
 num_cg_steps = 200
 num_iter = 4000
-num_wann = 4
-spn_formatted = .true.
-wannier_plot = .true.
-# wannier_plot_format = cube
+
+fermi_energy =   6.5283
+
+use_ws_distance = .true.
+# use_ws_distance = .false.
+bands_plot = .true.
+write_tb = .true.
+write_hr = .true.
+write_rmn = .true.
+
+# wannier_plot = .true.
+wannier_plot_format = cube
 wannier_plot_supercell = 4
+
 wvfn_formatted = .true.
+spn_formatted = .true.
 
 begin atoms_frac
 Si         0.0000000000       0.0000000000       0.0000000000

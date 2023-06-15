@@ -19,16 +19,13 @@ const tar_excludes = ["creator", ".gitignore", "README.md"]
 
 # gzip compression level, highest
 const GZIP = "-9"
-# By default, use gzip
-compress_prog = "gzip $GZIP"
-# Try to use pigz for parallel compression.
-# However, it is not available in github workflow (ubuntu-latest)
-try
-    run(`which pigz`)
+# Try to use pigz for parallel compression, much faster.
+if Sys.which("pigz") !== nothing
     # -k: keep original files
-    global compress_prog = "pigz $GZIP -k"
-catch
-    # pigz is not available
+    compress_prog = "pigz $GZIP -k"
+else
+    # By default, use gzip
+    compress_prog = "gzip $GZIP"
 end
 
 mkpath(artifacts_dir)

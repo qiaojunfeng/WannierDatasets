@@ -5,7 +5,7 @@
   max_seconds =   4.1040000000d+04
   outdir = './out/'
   prefix = 'si2'
-  pseudo_dir = '../../pseudo/'
+  pseudo_dir = '../../../pseudo/'
   restart_mode = 'from_scratch'
   tprnfor = .true.
   tstress = .true.

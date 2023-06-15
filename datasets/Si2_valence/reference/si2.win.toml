@@ -1,13 +1,16 @@
 wannier_plot_supercell = 4
 num_bands = 4
 num_iter = 4000
-wannier_plot = true
 num_cg_steps = 200
 conv_window = 3
+write_hr = true
+wannier_plot_format = "cube"
 num_wann = 4
 conv_tol = 2.0e-10
+use_ws_distance = true
 wvfn_formatted = true
 atoms_frac = [{ Si = [0.0, 0.0, 0.0] }, { Si = [0.25, 0.25, 0.25] }]
+write_rmn = true
 kpoints = [
     [0.0, 0.0, 0.0],
     [0.0, 0.0, 0.16666667],
@@ -242,6 +245,7 @@ kpoint_path = [
     [{ L = [0.5, 0.5, 0.5] }, { W = [0.5, 0.25, 0.75] }],
     [{ W = [0.5, 0.25, 0.75] }, { X = [0.5, 0.0, 0.5] }]
 ]
+write_tb = true
 projections = [
     "c= 0.67882,-0.67882,-0.67882:s",
     "c=-0.67882,-0.67882, 0.67882:s",
@@ -249,4 +253,4 @@ projections = [
     "c= 0.67882, 0.67882, 0.67882:s"
 ]
 bands_plot = true
-fermi_energy = 6.5589
+fermi_energy = 6.5283

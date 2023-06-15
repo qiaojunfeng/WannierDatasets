@@ -5,7 +5,7 @@
   max_seconds =   4.1040000000d+04
   outdir = './out/'
   prefix = 'si2'
-  pseudo_dir = '../../pseudo/'
+  pseudo_dir = '../../../pseudo/'
   tprnfor = .true.
   tstress = .true.
   verbosity = 'high'
@@ -32,7 +32,7 @@ ATOMIC_POSITIONS crystal
 Si         0.0000000000       0.0000000000       0.0000000000
 Si         0.2500000000       0.2500000000       0.2500000000
 K_POINTS automatic
-4 4 4 0 0 0
+6 6 6 0 0 0
 CELL_PARAMETERS angstrom
       0.0000000000       2.7152650000       2.7152650000
       2.7152650000       0.0000000000       2.7152650000
