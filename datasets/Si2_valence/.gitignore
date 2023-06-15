@@ -1,3 +1,4 @@
 # force add chk & nnkp, for WannierIO tests
 !*.chk
+!*.chk.fmt
 !*.nnkp
