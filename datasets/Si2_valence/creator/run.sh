@@ -14,6 +14,7 @@ mpirun -n $NP $PWX -nk $NK -in $F.in > $F.out
 
 F='bands'
 mpirun -n $NP $PWX -nk $NK -in $F.in > $F.out
+cp out/si2.xml qe_bands.xml
 
 F='nscf'
 mpirun -n $NP $PWX -nk $NK -in $F.in > $F.out
