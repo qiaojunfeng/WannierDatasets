@@ -1,0 +1,51 @@
+repos:
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.2.0
+    hooks:
+      - id: forbid-crlf
+      - id: remove-crlf
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: check-added-large-files
+        args: ['--maxkb=5120']  # 5MB
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: trailing-whitespace
+        exclude: &exclude_txtfiles >-
+          (?x)^(
+              datasets/.*\.amn|
+              datasets/.*\.mmn|
+              datasets/.*\.eig|
+              datasets/.*\.chk|
+              datasets/.*\.chk\.fmt|
+              datasets/.*\.spn|
+              datasets/.*\.mud|
+              datasets/.*\.nnkp|
+              datasets/.*\.wout|
+              datasets/.*_band\.dat|
+              datasets/.*_band\.kpt|
+              datasets/.*_band\.labelinfo\.dat|
+              datasets/.*_tb\.dat|
+              datasets/.*_hr\.dat|
+              datasets/.*_r\.dat|
+              datasets/.*_wsvec\.dat|
+              datasets/.*\.xsf|
+              datasets/.*\.bxsf|
+              datasets/.*\.cube|
+              datasets/.*\.gnu
+          )$
+      - id: mixed-line-ending
+        exclude: *exclude_txtfiles
+      - id: end-of-file-fixer
+        exclude: *exclude_txtfiles
+      - id: check-merge-conflict
+      - id: check-yaml
+        args: [ --unsafe ]
+      - id: check-json
+      - id: check-toml
+      - id: check-xml
+  - repo: https://github.com/qiaojunfeng/pre-commit-julia-format
+    rev: v0.1.1
+    hooks:
+    - id: julia-format
