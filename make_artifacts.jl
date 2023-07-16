@@ -10,6 +10,10 @@
 #
 using Tar, Inflate, SHA, TOML
 
+# Let Artifacts.toml points to local tarballs, otherwise points to GitHub releases
+LOCAL = false
+# LOCAL = true
+
 artifacts = Dict()
 
 const datasets_dir = joinpath(@__DIR__, "datasets")
@@ -52,22 +56,23 @@ for data in readdir(datasets_dir)
         run(Cmd(vcat(TAR_CMD, ["-cvf", outpath], files)))
     end
 
+    if LOCAL
+        # if you want to test locally
+        url = "file://$(outpath)"
+    else
+        # use github release to host the artifacts
+        # https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
+        # 2GB limit per file, no limit on total size, no bandwidth limit
+        # https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
+        url = "https://github.com/qiaojunfeng/WannierDatasets/releases/latest/download/$(tar_name)"
+    end
+
     artifact_name = data
     artifacts[artifact_name] = Dict(
         "git-tree-sha1" => Tar.tree_hash(IOBuffer(inflate_gzip(outpath))),
         "lazy" => true,
-        "download" => [
-            Dict(
-                # Use github release to host the artifacts
-                # https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
-                # 2GB limit per file, no limit on total size, no bandwidth limit
-                # https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
-                "url" => "https://github.com/qiaojunfeng/WannierDatasets/releases/latest/download/$(tar_name)",
-                # Or if you want to test locally
-                # "url" => "file://$(outpath)",
-                "sha256" => bytes2hex(open(sha256, outpath)),
-            ),
-        ],
+        "download" =>
+            [Dict("url" => url, "sha256" => bytes2hex(open(sha256, outpath)))],
     )
 end
 
