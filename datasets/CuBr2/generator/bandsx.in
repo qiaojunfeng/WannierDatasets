@@ -1,0 +1,5 @@
+&BANDS
+  prefix='CuBr2'
+  outdir='./out/'
+  filband='qe_bands.dat'
+/

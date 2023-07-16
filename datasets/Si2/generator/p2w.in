@@ -1,0 +1,9 @@
+&INPUTPP
+  outdir = './out/'
+  prefix = 'Si2'
+  seedname = 'Si2'
+! spn_formatted = .true.
+! write_unk = .true.
+! reduce_unk = .true.
+! wvfn_formatted = .true.
+/

@@ -1,0 +1,12 @@
+&INPUTPP
+  outdir = './out/'
+  prefix = 'Si2_valence'
+  reduce_unk = .true.
+  seedname = 'Si2_valence'
+  spn_formatted = .true.
+  write_unk = .true.
+  wvfn_formatted = .true.
+! amn_formatted = .false.
+! mmn_formatted = .false.
+! eig_formatted = .false.
+/

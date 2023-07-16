@@ -4,4 +4,4 @@
 !*.nnkp
 
 # force add w90 bands, for Wannier.jl examples
-!si2_band.*
+!Si2_band.*
