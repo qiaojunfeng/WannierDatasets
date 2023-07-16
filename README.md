@@ -23,17 +23,12 @@ to manage the datasets. This allows us to
 
 ## Structure of the repo
 
+- [`datasets/`](./datasets/) each subfolder contains a dataset for a specific system
 - [`pseudo/`](./pseudo/) pseudopotentials used when generating the datasets
 - [`src/`](./src/) a fake folder just to make `Project.toml` happy
 - [`util/`](./util/) Several small scripts that help with running the examples
 
 ## Contributing
 
-If you feel your dataset is useful for the community, please feel free to
-contribute. In general, we would like to
-
-- keep the repository as small as possible but still produce (more or less)
-  physically meaningful results (e.g., roughly correct band structures).
-  Of course, for testing datasets, no such requirement is needed.
-- keep the original DFT input files and scripts for generating the datasets,
-  to ensure reproducibility. This also allows us to regenerate the datasets if needed.
+If you feel your dataset is useful for the community, please feel free to contribute.
+Please have a look at the [contributing guidelines](./docs/CONTRIBUTING.md).
