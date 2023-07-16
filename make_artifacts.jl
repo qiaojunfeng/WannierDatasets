@@ -14,19 +14,30 @@ artifacts = Dict()
 
 const datasets_dir = joinpath(@__DIR__, "datasets")
 const artifacts_dir = joinpath(@__DIR__, "artifacts")
-# exclude the creator folder which contains the inputs for generating the datasets
-const tar_excludes = ["creator", ".gitignore", "README.md"]
+# exclude the generator folder which contains the inputs for generating the datasets
+const tar_excludes = ["generator", ".gitignore", "README.md"]
 
 # gzip compression level, highest
 const GZIP = "-9"
-# Try to use pigz for parallel compression, much faster.
-if Sys.which("pigz") !== nothing
+# By default, use gzip
+compress_prog = "gzip $GZIP"
+# Try to use pigz for parallel compression.
+# However, it is not available in github workflow (ubuntu-latest)
+try
+    run(`which pigz`)
     # -k: keep original files
-    compress_prog = "pigz $GZIP -k"
-else
-    # By default, use gzip
-    compress_prog = "gzip $GZIP"
+    global compress_prog = "pigz $GZIP -k"
+catch
+    # pigz is not available
 end
+
+TAR_CMD = [
+    "tar",
+    "--exclude-vcs",
+    "--exclude-vcs-ignores",
+    "--use-compress-program=$compress_prog",
+]
+append!(TAR_CMD, ["--exclude=" * f for f in tar_excludes])
 
 mkpath(artifacts_dir)
 
@@ -38,24 +49,25 @@ for data in readdir(datasets_dir)
     outpath = joinpath(artifacts_dir, tar_name)
     cd(fullpath) do
         files = readdir()
-        filter!(x -> !(x in tar_excludes), files)
-        run(`tar --use-compress-program="$compress_prog" -cvf $outpath $files`)
+        run(Cmd(vcat(TAR_CMD, ["-cvf", outpath], files)))
     end
 
     artifact_name = data
     artifacts[artifact_name] = Dict(
         "git-tree-sha1" => Tar.tree_hash(IOBuffer(inflate_gzip(outpath))),
         "lazy" => true,
-        "download" => [Dict(
-            # Use github release to host the artifacts
-            # https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
-            # 2GB limit per file, no limit on total size, no bandwidth limit
-            # https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
-            "url" => "https://github.com/qiaojunfeng/WannierDatasets/releases/latest/download/$(tar_name)",
-            # Or if you want to test locally
-            # "url" => "file://$(outpath)",
-            "sha256" => bytes2hex(open(sha256, outpath))
-        )]
+        "download" => [
+            Dict(
+                # Use github release to host the artifacts
+                # https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
+                # 2GB limit per file, no limit on total size, no bandwidth limit
+                # https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
+                "url" => "https://github.com/qiaojunfeng/WannierDatasets/releases/latest/download/$(tar_name)",
+                # Or if you want to test locally
+                # "url" => "file://$(outpath)",
+                "sha256" => bytes2hex(open(sha256, outpath)),
+            ),
+        ],
     )
 end
 
