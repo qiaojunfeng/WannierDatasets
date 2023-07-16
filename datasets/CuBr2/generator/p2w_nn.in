@@ -1,0 +1,8 @@
+&INPUTPP
+  outdir = './out/'
+  prefix = 'CuBr2'
+  seedname = 'CuBr2_nn'
+  write_amn = .false.
+  write_eig = .false.
+  scdm_proj = .true.  ! this is useless, but we need it to avoid p2w error
+/

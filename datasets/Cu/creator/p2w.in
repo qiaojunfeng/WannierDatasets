@@ -1,9 +1,0 @@
-&INPUTPP
-  outdir = './out/'
-  prefix = 'cu'
-  reduce_unk = .true.
-  seedname = 'cu'
-  spn_formatted = .true.
-! write_unk = .true.
-  wvfn_formatted = .true.
-/

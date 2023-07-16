@@ -1,0 +1,13 @@
+&inputpp
+    outdir = '../out/'
+    prefix = 'CrI3'
+    seedname = 'CrI3_updn'
+    ! I need a atom_proj to pass the check on `auto_projections` in nnkp
+    atom_proj = .true.
+    write_amn = .false.
+    !write_spn = .true.
+    write_mmn = .false.
+    write_unk = .false.
+    write_eig = .false.
+    write_mud = .true.
+/
