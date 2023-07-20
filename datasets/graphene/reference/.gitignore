@@ -1,2 +1,3 @@
 # force add xsf for Wannier.jl tests
 !*.xsf
+!*.nnkp
