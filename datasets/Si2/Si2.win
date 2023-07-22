@@ -1,3 +1,7 @@
+# restart = plot
+# write_tb = true
+# use_ws_distance = .false.
+
 bands_plot = .true.
 conv_tol =   2.0000000000d-10
 conv_window = 3
