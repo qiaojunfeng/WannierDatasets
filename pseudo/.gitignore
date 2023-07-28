@@ -2,5 +2,7 @@ SSSP_1.1.2_PBEsol_efficiency.tar.gz
 archive.tar.gz
 #metadata.json
 
+nc-fr-04_pbe_standard_upf.tgz
+
 *.UPF
 *.upf
