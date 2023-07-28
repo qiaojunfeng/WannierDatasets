@@ -20,6 +20,7 @@ repos:
               datasets/.*\.chk|
               datasets/.*\.chk\.fmt|
               datasets/.*\.spn|
+              datasets/.*\.spn\.fmt|
               datasets/.*\.mud|
               datasets/.*\.nnkp|
               datasets/.*\.wout|
@@ -33,7 +34,9 @@ repos:
               datasets/.*\.xsf|
               datasets/.*\.bxsf|
               datasets/.*\.cube|
-              datasets/.*\.gnu
+              datasets/.*\.gnu|
+              datasets/.*-bands\.dat|
+              datasets/.*-curv\.dat
           )$
       - id: mixed-line-ending
         exclude: *exclude_txtfiles
