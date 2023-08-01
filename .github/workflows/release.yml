@@ -76,6 +76,7 @@ jobs:
           overwrite: true
           asset_path: |
             artifacts/*.tar.gz
+            Artifacts.toml
 
       - name: Generate PR message
         id: get-version
