@@ -1,0 +1,11 @@
+&inputpp
+   outdir = 'out/'
+   prefix = 'Fe'
+   seedname = 'Fe_updn'
+   write_mmn = .false.
+   write_amn = .false.
+   write_eig = .false.
+   write_spn = .false.
+   write_unk = .false.
+   write_mud = .true.
+/
