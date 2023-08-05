@@ -26,12 +26,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Checkout out pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr checkout ${{ github.event.pull_request.number }}
+
+      - uses: actions/setup-python@v4
 
       - name: Setup Julia
         uses: julia-actions/setup-julia@v1

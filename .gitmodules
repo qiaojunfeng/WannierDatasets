@@ -1,0 +1,3 @@
+[submodule "util/GitHub-ForceLargeFiles"]
+	path = util/GitHub-ForceLargeFiles
+	url = git@github.com:sisl/GitHub-ForceLargeFiles.git

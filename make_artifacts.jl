@@ -10,16 +10,42 @@
 #
 using Tar, Inflate, SHA, TOML
 
-# Let Artifacts.toml points to local tarballs, otherwise points to GitHub releases
+# let Artifacts.toml point to local tarballs, otherwise point to GitHub releases
 LOCAL = false
-# LOCAL = true
+# if on local machine, I assume all the 7z files are already decompressed
+DECOMPRESS_7Z = true
+
+# check if we are running in github actions
+if isnothing(get(ENV, "GITHUB_ACTIONS", nothing))
+    LOCAL = true
+    DECOMPRESS_7Z = false
+else
+    LOCAL = false
+    DECOMPRESS_7Z = true
+end
+
+if DECOMPRESS_7Z
+    PY_SCRIPT = joinpath(@__DIR__, "util/GitHub-ForceLargeFiles/src/reverse.py")
+    run(
+        Cmd([
+            "python",
+            PY_SCRIPT,
+            # reverse.py will delete the 7z files by default
+            "--delete_partitions",
+            # workaround for python argparse: only empty string "" -> false
+            "",
+            "--root_dir",
+            joinpath(@__DIR__, "datasets"),
+        ]),
+    )
+end
 
 artifacts = Dict()
 
 const datasets_dir = joinpath(@__DIR__, "datasets")
 const artifacts_dir = joinpath(@__DIR__, "artifacts")
 # exclude the generator folder which contains the inputs for generating the datasets
-const tar_excludes = ["generator", ".gitignore", "README.md"]
+const tar_excludes = ["generator", ".gitignore", "README.md", "*.7z.*"]
 
 # gzip compression level, highest
 const GZIP = "-9"
@@ -46,6 +72,7 @@ append!(TAR_CMD, ["--exclude=" * f for f in tar_excludes])
 mkpath(artifacts_dir)
 
 for data in readdir(datasets_dir)
+    startswith(data, "_") && continue
     fullpath = joinpath(datasets_dir, data)
     isdir(fullpath) || continue
 
