@@ -1,7 +1,7 @@
 name = "WannierDatasets"
 uuid = "24e05d5e-73ff-4cec-9dbe-b1e0d209e091"
 authors = ["Junfeng Qiao <qiaojunfeng@outlook.com>"]
-version = "0.1.2"
+version = "0.1.3"
 
 [deps]
 Inflate = "d25df0c9-e2be-5dd7-82c8-3ad0b3e990b9"
