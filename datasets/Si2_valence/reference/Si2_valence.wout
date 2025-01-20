@@ -424,6 +424,11 @@
 
  Time to calculate interpolated band structure       0.139 (sec)
 
+      Wannier Function Num:    1       Phase Factor =    0.996157  +0.087588i
+      Wannier Function Num:    2       Phase Factor =    0.996157  +0.087588i
+      Wannier Function Num:    3       Phase Factor =    0.996157  +0.087588i
+      Wannier Function Num:    4       Phase Factor =    0.998869  +0.047543i
+ 
       Wannier Function Num:    1       Maximum Im/Re Ratio =    4.566451
       Wannier Function Num:    2       Maximum Im/Re Ratio =    4.566481
       Wannier Function Num:    3       Maximum Im/Re Ratio =    4.566335
