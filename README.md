@@ -1,3 +1,8 @@
+> [!IMPORTANT]
+> This repo has been retired and archived. The datasets are now hosted on
+> Hugging Face <https://huggingface.co/datasets/atomology/WannierDatasets>,
+> which has higher storage quota for large datasets.
+
 # WannierDatasets
 
 Datasets for playing with Wannier functions.
